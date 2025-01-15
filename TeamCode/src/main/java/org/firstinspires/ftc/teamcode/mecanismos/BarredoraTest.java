@@ -6,14 +6,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-
 public class BarredoraTest extends LinearOpMode {
     DcMotor motor;
     public Servo Articulacion_Barredora1;
     public Servo Articulacion_Barredora2;
     DcMotor Barredora;
-    public int pos = 0;
-    public boolean press;
+    public int pos = 1;
+    public boolean press1;
+    private boolean press2;
 
     public int degreesToTicks(int degrees) {
         return (int) Math.round(degrees * 1.493611111);
@@ -26,24 +26,33 @@ public class BarredoraTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             //Corredera
-            if (gamepad1.right_bumper || press) {
-//                if(){
-//                    motor.setTargetPosition(degreesToTicks(45));
-//                    motor.setPower(0.6);
-//                }else if() {
-//                }
-//                pos = 1;
-//                press = true;
-//                if (!gamepad1.right_bumper) {
-//                    press = false;
-//                }
-//                if (gamepad1.left_bumper) {
-//                    motor.setTargetPosition(degreesToTicks(0));
-//                    motor.setPower(0.6);
-//                    pos = 0;
-//                    press = false;
-//                }
-//                //Articulacion
+             if(gamepad1.right_bumper || press1){
+                press1 = true;
+            }
+            if(!gamepad1.right_bumper && press1) {
+                press2 = true;
+            }
+
+            if(press1 && press2){
+                if(pos == 0){
+                    motor.setTargetPosition(degreesToTicks(-104));
+                    motor.setPower(1);
+                } else if (pos == 1) {
+                    motor.setTargetPosition(degreesToTicks(-226));
+                    motor.setPower(1);
+                }
+                press2 = false;
+                press1 = false;
+                pos ++;
+            }
+
+            if (gamepad1.left_bumper) {
+                    motor.setTargetPosition(degreesToTicks(-78));
+                    motor.setPower(1);
+                    pos = 0;
+            }
+
+                //Articulacion
 //            if (gamepad1.dpad_up){
 //                Articulacion(0.5,0.5);
 //            }
@@ -51,22 +60,25 @@ public class BarredoraTest extends LinearOpMode {
 //                Articulacion(0.0,1.0);
 //            }
 
-                telemetry.addData("motorPos", motor.getCurrentPosition());
-                telemetry.update();
+            telemetry.addData("motorPos", motor.getCurrentPosition());
+            telemetry.addData("pos:", pos);
+            telemetry.addData("pressed1:", press1);
+            telemetry.addData("pressed:2", press2);
+            telemetry.update();
 
 //            if (gamepad1.a){
 //                Barredora.setPower(1.0);
 //            } else if (gamepad1.x){
 //                Barredora.setPower(-1.0);
 //            } else{
-//                Barredora.setPower(0.0);
-//            }
-            }
+//               Barredora.setPower(0.0);
+//          }
+
         }
     }
 
     public void initBarredora() {
-        motor = hardwareMap.get(DcMotor.class, "Corredera");
+        motor = hardwareMap.get(DcMotor.class, "correderaBarredora");
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor.setTargetPosition(degreesToTicks(0));
