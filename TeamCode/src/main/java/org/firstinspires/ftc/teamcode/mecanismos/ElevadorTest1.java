@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.OpMaster.Mecanismos;
-//A PARA SUBIR
-//B PARA BAJAR
+//right_bumper PARA SUBIR
+//left_bumper PARA BAJAR
 
 //    private static final double TICKS_PER_REVOLUTION = 8192;   //537.7
 //    int elevatorTolerance = 50;
@@ -45,9 +45,9 @@ public class ElevadorTest1 extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            if(gamepad1.a && elevador1.getCurrentPosition()>topeSuperior && elevador2.getCurrentPosition()>topeSuperior){
+            if(gamepad1.right_bumper && elevador1.getCurrentPosition()>topeSuperior && elevador2.getCurrentPosition()>topeSuperior){
                 subirElevador(0.9);
-            }else if (gamepad1.b && elevador1.getCurrentPosition()<topeInferior && elevador2.getCurrentPosition()<topeInferior){
+            }else if (gamepad1.left_bumper && elevador1.getCurrentPosition()<topeInferior && elevador2.getCurrentPosition()<topeInferior){
                 bajarElevador(0.9);
             }else {
                 mantenerElevador();
