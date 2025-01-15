@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.teamcode.OpMaster.Mecanismos;
+
 @TeleOp
 public class ElevadorTest1 extends LinearOpMode {
     public DcMotor elevador1 = null;

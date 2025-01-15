@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
 public class GarraCompleta extends LinearOpMode {
-    //      <<Declarar webadas>>
+    //       <<Declarar webadas>>
     public Servo CorrederaGarra;
     public Servo CorrederaGarra2;
     public Servo servo_Brazo1;
