@@ -40,7 +40,9 @@ public class BarredoraTest extends LinearOpMode {
             //Corredera
             if (gamepad1.dpad_up){
                 extension(1);
-            } else extension(0);
+            } else if (gamepad1.dpad_down && motor.getCurrentPosition() < 0){
+                retraccion(1);
+            } else mantener();
 
             //Articulacion
 /*           if (gamepad1.dpad_up){
@@ -79,7 +81,9 @@ public class BarredoraTest extends LinearOpMode {
     }
 
     public void mantener (){
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setTargetPosition(motor.getCurrentPosition());
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setPower(1);
     }
 
 
