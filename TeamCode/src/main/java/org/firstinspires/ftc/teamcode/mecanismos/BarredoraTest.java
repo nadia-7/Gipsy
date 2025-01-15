@@ -11,28 +11,48 @@ public class BarredoraTest extends LinearOpMode {
     public Servo Articulacion_Barredora1;
     public Servo Articulacion_Barredora2;
     DcMotor Barredora;
-    //     ticks = 537.7;
-    int newTarget = 90;
-    public int nsdkl(int degrees){return (int) Math.round(degrees * 1.4936111);}
+    public int pos;
 
+    public int degreesToTicks(int degrees){return (int) Math.round(degrees * 2.0883);}
+    @Override
     public void runOpMode(){
         initBarredora();
         waitForStart();
 
         while (opModeIsActive()) {
-            if (gamepad1.right_bumper) {
-                motor.setTargetPosition(nsdkl(newTarget));
+            //Corredera
+            if (gamepad1.right_bumper && pos == 0) {
+                motor.setTargetPosition(degreesToTicks(45));
                 motor.setPower(0.6);
-                sleep(1200);
+                pos += pos;
+            }else if (gamepad1.right_bumper && pos == 1){
+                motor.setTargetPosition(degreesToTicks(90));
+                motor.setPower(0.6);
+                pos += pos;
+            }else {
+                motor.setPower(0.0);
+            }
+            if (gamepad1.left_bumper && pos == 2) {
+                motor.setTargetPosition(degreesToTicks(45));
+                motor.setPower(0.6);
+                pos -= pos;
+            }else if (gamepad1.left_bumper && pos == 1){
+                motor.setTargetPosition(degreesToTicks(0));
+                motor.setPower(0.6);
+                pos -= pos;
+            } else{
+                motor.setPower(0.0);
+            }
+            //Articulacion
+            if (gamepad1.dpad_up){
                 Articulacion(0.5,0.5);
             }
-            if (gamepad1.left_bumper) {
+            if (gamepad1.dpad_down){
                 Articulacion(0.0,1.0);
-                sleep(1200);
-                motor.setTargetPosition(0);
-                motor.setPower(0.6);
             }
-            telemetry.addData("motorPos", motor.getTargetPosition());
+
+            telemetry.addData("motorPos", motor.getCurrentPosition());
+            telemetry.update();
 
             if (gamepad1.a){
                 Barredora.setPower(1.0);
@@ -47,7 +67,7 @@ public class BarredoraTest extends LinearOpMode {
         motor = hardwareMap.get(DcMotor.class, "Corredera");
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setTargetPosition(nsdkl(newTarget));
+        motor.setTargetPosition(degreesToTicks(0));
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         Articulacion_Barredora1 = hardwareMap.get(Servo.class, "A_Barredora1");
         Articulacion_Barredora2 = hardwareMap.get(Servo.class, "A_Barredora2");

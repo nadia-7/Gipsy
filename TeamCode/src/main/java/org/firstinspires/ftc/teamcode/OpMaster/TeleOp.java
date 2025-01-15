@@ -13,10 +13,10 @@ public class TeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             // ====ELEVADOR====
-            if(gamepad1.right_trigger > 0){  //mover Elevador Arriba
+            if(gamepad1.right_trigger != 0){  //mover Elevador Arriba
                 robot.elevadorEnfrente(gamepad1.right_trigger);
             }
-            if(gamepad1.left_trigger > 0){  //mover Elevador Abajo
+            if(gamepad1.left_trigger != 0){  //mover Elevador Abajo
                 robot.elevadorAtras(gamepad1.left_trigger);
             }
             robot.elevador1.setPower(0);
