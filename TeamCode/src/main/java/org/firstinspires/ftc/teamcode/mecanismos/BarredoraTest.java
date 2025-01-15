@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
+
 public class BarredoraTest extends LinearOpMode {
     DcMotor motor;
     public Servo Articulacion_Barredora1;
@@ -26,23 +27,23 @@ public class BarredoraTest extends LinearOpMode {
         while (opModeIsActive()) {
             //Corredera
             if (gamepad1.right_bumper || press) {
-                if(){
-                    motor.setTargetPosition(degreesToTicks(45));
-                    motor.setPower(0.6);
-                }else if() {
-                }
-                pos = 1;
-                press = true;
-                if (!gamepad1.right_bumper) {
-                    press = false;
-                }
-                if (gamepad1.left_bumper) {
-                    motor.setTargetPosition(degreesToTicks(0));
-                    motor.setPower(0.6);
-                    pos = 0;
-                    press = false;
-                }
-                //Articulacion
+//                if(){
+//                    motor.setTargetPosition(degreesToTicks(45));
+//                    motor.setPower(0.6);
+//                }else if() {
+//                }
+//                pos = 1;
+//                press = true;
+//                if (!gamepad1.right_bumper) {
+//                    press = false;
+//                }
+//                if (gamepad1.left_bumper) {
+//                    motor.setTargetPosition(degreesToTicks(0));
+//                    motor.setPower(0.6);
+//                    pos = 0;
+//                    press = false;
+//                }
+//                //Articulacion
 //            if (gamepad1.dpad_up){
 //                Articulacion(0.5,0.5);
 //            }
