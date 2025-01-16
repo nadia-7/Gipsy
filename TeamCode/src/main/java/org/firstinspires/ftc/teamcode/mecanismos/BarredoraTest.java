@@ -51,7 +51,7 @@ public class BarredoraTest extends LinearOpMode {
             } else mantener();
 
             //Ingesta
-           if (gamepad1.dpad_left){
+           if (gamepad1.dpad_left){//sacar
                 barredora.setPower(1.0);
            } else if (gamepad1.dpad_right){
               barredora.setPower(-1.0);
@@ -59,7 +59,7 @@ public class BarredoraTest extends LinearOpMode {
                barredora.setPower(0.0);
           }
 
-           //articulación
+           //articulación //derecha 0-1
            if (gamepad1.a){
                barrArtDer.setPosition(0);
                barrArtIzq.setPosition(1);

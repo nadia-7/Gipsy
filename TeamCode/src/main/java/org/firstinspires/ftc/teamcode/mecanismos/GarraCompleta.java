@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /*
+corredera iniciarr g1 pos 0 g2 pos 1
+ */
+/*
 * Corredera Garra [Y] [A]
 * Brazo [left stick y]
 * Articulacion [right stick y]
@@ -24,8 +27,6 @@ public class GarraCompleta extends LinearOpMode {
     public Servo servo_Brazo2;
     public Servo ArticulacionGarra;
     public Servo servo_Garra;
-    public DcMotor elevador1 = null;
-    public DcMotor elevador2 = null;
 
     //           <<Variables>>
     //BrazoGarra
@@ -43,7 +44,6 @@ public class GarraCompleta extends LinearOpMode {
 
     public void runOpMode(){
         initGarra();
-        initElevador();
         waitForStart();
 
         while (opModeIsActive()){
@@ -72,6 +72,7 @@ public class GarraCompleta extends LinearOpMode {
                 servoBPosition2 = servo_Brazo2.getPosition();
                 moverBrazo(servoBPosition1,servoBPosition2);
             }
+
             //                                                                  ARTICULACION
             if (gamepad1.right_stick_y > 0.3) {   // GARRA MANO FRENTE
                 servoPositionH = Math.min(servoPositionH + Aincrement, 1.0);
@@ -93,14 +94,6 @@ public class GarraCompleta extends LinearOpMode {
                 servo_Garra.setPosition(0);
                 garra_abierta = false;
             }
-            //                                                              ELEVADOR
-            if(gamepad1.right_bumper && elevador1.getCurrentPosition()>topeSuperior && elevador2.getCurrentPosition()>topeSuperior){
-                subirElevador(0.9);
-            }else if (gamepad1.left_bumper && elevador1.getCurrentPosition()<topeInferior && elevador2.getCurrentPosition()<topeInferior){
-                bajarElevador(0.9);
-            }else {
-                mantenerElevador();
-            }
 
             // Telemetry de la corredera
             telemetry.addData("CorrederaG1 Pos= ", CorrederaGarra.getPosition());
@@ -117,11 +110,11 @@ public class GarraCompleta extends LinearOpMode {
     }
     public void initGarra(){
         CorrederaGarra = hardwareMap.get(Servo.class, "Corredera1");//  1Exp
-        CorrederaGarra2 = hardwareMap.get(Servo.class, "Corredera2");// 1 ctrl
-        servo_Brazo1 = hardwareMap.get(Servo.class, "brazo1");//  3 Exp
+        CorrederaGarra2 = hardwareMap.get(Servo.class, "Corredera2");// 3 ctrl
+        servo_Brazo1 = hardwareMap.get(Servo.class, "brazo1");//  2 Exp
         servo_Brazo2 = hardwareMap.get(Servo.class, "brazo2");// 0 cntrl
-        ArticulacionGarra = hardwareMap.get(Servo.class, "hand");// 2 cntl
-        servo_Garra = hardwareMap.get(Servo.class, "garra");//  2 Exp
+        ArticulacionGarra = hardwareMap.get(Servo.class, "hand");// 1 cntl
+        servo_Garra = hardwareMap.get(Servo.class, "garra");//  3 Exp
         ArticulacionGarra.setPosition(0.5);
         telemetry.addLine("Garra iniciada");
         telemetry.addLine("Garra iniciada");
@@ -138,48 +131,5 @@ public class GarraCompleta extends LinearOpMode {
     public void moverAGarra(double POS){
         ArticulacionGarra.setPosition(POS);
     }
-    public void initElevador(){
-        elevador1 = hardwareMap.get(DcMotor.class,"elevador1");
-        elevador2 = hardwareMap.get(DcMotor.class,"elevador2");
 
-        elevador1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevador2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        elevador1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevador2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        elevador2.setDirection(DcMotorSimple.Direction.REVERSE);
-
-        elevador1.setPower(0);
-        elevador2.setPower(0);
-
-        elevador1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        elevador2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        telemetry.addLine("Elevadores iniciados");
-    }
-    public void subirElevador(double POWER){
-
-        elevador1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevador2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevador1.setPower(-POWER);
-        elevador2.setPower(-POWER);
-    }
-    public void bajarElevador(double POWER){
-
-        elevador1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevador2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        elevador1.setPower(POWER);
-        elevador2.setPower(POWER);
-    }
-
-    public void mantenerElevador(){
-        elevador1.setTargetPosition(elevador1.getCurrentPosition());
-        elevador2.setTargetPosition(elevador1.getCurrentPosition());
-
-        elevador1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevador2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        elevador1.setPower(1);
-        elevador2.setPower(1);
-    }
 }
