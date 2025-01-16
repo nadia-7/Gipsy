@@ -7,18 +7,21 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 
 public class Mecanismos {
-    public Mecanismos(HardwareMap hardwareMap){
-        elevador1 = hardwareMap.get(DcMotor.class,"elevador1");
-        elevador2 = hardwareMap.get(DcMotor.class,"elevador2");
-    }
+
     public DcMotor elevador1;
     public DcMotor elevador2;
-    int topeSuperior= -3200;
-    int topeInferior= -100;
+    public int topeSuperior= -3200;
+    public int topeInferior= -100;
 
-    public void initElevador(){
+    public void init(HardwareMap hardwareMap){
+
+        elevador1 = hardwareMap.get(DcMotor.class,"elevador1");
+        elevador2 = hardwareMap.get(DcMotor.class,"elevador2");
+
         elevador1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevador2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -32,7 +35,6 @@ public class Mecanismos {
 
         elevador1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         elevador2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        telemetry.addLine("Elevadores iniciados");
     }
     public void subirElevador(double POWER){
 

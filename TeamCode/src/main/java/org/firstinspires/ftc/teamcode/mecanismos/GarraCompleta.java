@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.mecanismos;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -13,6 +14,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 *
 * ELEVADOR [right bumper] [left bumper]
 */
+
+@TeleOp
 public class GarraCompleta extends LinearOpMode {
     //       <<Declarar webadas>>
     public Servo CorrederaGarra;

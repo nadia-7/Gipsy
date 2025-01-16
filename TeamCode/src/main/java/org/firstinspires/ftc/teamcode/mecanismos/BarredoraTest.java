@@ -4,64 +4,76 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-
-//104 grados tope
-//-78 grados recoger un sample
 @TeleOp
 public class BarredoraTest extends LinearOpMode {
-    DcMotor motor;
-    //public Servo Articulacion_Barredora1;
-    // public Servo Articulacion_Barredora2;
-    //DcMotor Barredora;
-    public int pos = 1;
-    public boolean press1;
-    private boolean press2;
-    public void initBarredora() {
+    public DcMotor motor;
+    public DcMotor barredora;
+    public Servo barrArtDer; //3 control
+    public Servo barrArtIzq; //0 expansion
+
+    public void initB () {
         motor = hardwareMap.get(DcMotor.class, "correderaBarredora");
+        barredora = hardwareMap.get(DcMotor.class, "ingesta");
+        barrArtDer = hardwareMap.get(Servo.class, "bArtDer");
+        barrArtIzq = hardwareMap.get(Servo.class, "bArtIzq");
+
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        barredora.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        barredora.setPower(0);
         motor.setPower(0);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //motor.setTargetPosition(degreesToTicks(0));
-        //motor.setPower(0.6);
-        telemetry.addLine("Barredora iniciada");
+
+        barrArtDer.setPosition(0);
+        barrArtIzq.setPosition(1);
+
+        telemetry.addData("Articulacion Der", barrArtDer.getPosition());
+        telemetry.addData("Articulacion Izq", barrArtIzq.getPosition());
         telemetry.update();
     }
 
 
 
+
     @Override
     public void runOpMode() {
-        initBarredora();
+        initB();
 
         waitForStart();
 
         while (opModeIsActive()) {
-            //Corredera
+            //Extension
             if (gamepad1.dpad_up){
                 extension(1);
             } else if (gamepad1.dpad_down && motor.getCurrentPosition() < 0){
                 retraccion(1);
             } else mantener();
 
-            //Articulacion
-/*           if (gamepad1.dpad_up){
-                Articulacion(0.5,0.5);
-            }
-            if (gamepad1.dpad_down){
-               Articulacion(0.0,1.0);
-            }*/
+            //Ingesta
+           if (gamepad1.dpad_left){
+                barredora.setPower(1.0);
+           } else if (gamepad1.dpad_right){
+              barredora.setPower(-1.0);
+            } else{
+               barredora.setPower(0.0);
+          }
 
+           //articulación
+           if (gamepad1.a){
+               barrArtDer.setPosition(0);
+               barrArtIzq.setPosition(1);
+           } else if (gamepad1.b){
+               barrArtDer.setPosition(0.5);
+               barrArtIzq.setPosition(0.5);
+           }
+
+
+            telemetry.addData("Articulacion Der", barrArtDer.getPosition());
+            telemetry.addData("Articulacion Izq", barrArtIzq.getPosition());
             telemetry.addData("POSICION EXTENSION", motor.getCurrentPosition());
             telemetry.update();
 
-/*           if (gamepad1.a){
-                Barredora.setPower(1.0);
-           } else if (gamepad1.x){
-              Barredora.setPower(-1.0);
-            } else{
-               Barredora.setPower(0.0);
-          }*/
 
         }
     }
