@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
-public class TeleOp extends LinearOpMode {
+public class TeleOpMaster extends LinearOpMode {
 
 
 @Override
@@ -29,7 +29,6 @@ public class TeleOp extends LinearOpMode {
                             -gamepad1.right_stick_x
                     )
             );
-
             drive.update();
 
             // ====ELEVADOR====
