@@ -33,15 +33,19 @@ public class TeleOp extends LinearOpMode {
             drive.update();
 
             // ====ELEVADOR====
-            if(gamepad1.right_trigger != 0){  //mover Elevador Arriba
-                robot.elevadorEnfrente(gamepad1.right_trigger);
+            if(gamepad1.right_bumper && robot.elevador1.getCurrentPosition()>robot.topeSuperior && robot.elevador2.getCurrentPosition()>robot.topeSuperior){
+                robot.subirElevador(0.9);
+            }else if (gamepad1.left_bumper && robot.elevador1.getCurrentPosition()<robot.topeInferior && robot.elevador2.getCurrentPosition()<robot.topeInferior){
+                robot.bajarElevador(0.9);
+            }else {
+                robot.mantenerElevador();
             }
-            if(gamepad1.left_trigger != 0){  //mover Elevador Abajo
-                robot.elevadorAtras(gamepad1.left_trigger);
-            }
-            robot.elevador1.setPower(0);
-            robot.elevador2.setPower(0);
+
+            telemetry.addData("m1", robot.elevador1.getCurrentPosition());
+            telemetry.addData("m2", robot.elevador2.getCurrentPosition());
+            telemetry.update();
 
         }
+
     }
 }

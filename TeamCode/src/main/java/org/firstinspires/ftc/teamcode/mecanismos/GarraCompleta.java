@@ -113,12 +113,12 @@ public class GarraCompleta extends LinearOpMode {
         }
     }
     public void initGarra(){
-        CorrederaGarra = hardwareMap.get(Servo.class, "Corredera1");
-        CorrederaGarra2 = hardwareMap.get(Servo.class, "Corredera2");
-        servo_Brazo1 = hardwareMap.get(Servo.class, "brazo1");
-        servo_Brazo2 = hardwareMap.get(Servo.class, "brazo2");
-        ArticulacionGarra = hardwareMap.get(Servo.class, "hand");
-        servo_Garra = hardwareMap.get(Servo.class, "garra");
+        CorrederaGarra = hardwareMap.get(Servo.class, "Corredera1");//  1Exp
+        CorrederaGarra2 = hardwareMap.get(Servo.class, "Corredera2");// 1 ctrl
+        servo_Brazo1 = hardwareMap.get(Servo.class, "brazo1");//  3 Exp
+        servo_Brazo2 = hardwareMap.get(Servo.class, "brazo2");// 0 cntrl
+        ArticulacionGarra = hardwareMap.get(Servo.class, "hand");// 2 cntl
+        servo_Garra = hardwareMap.get(Servo.class, "garra");//  2 Exp
         ArticulacionGarra.setPosition(0.5);
         telemetry.addLine("Garra iniciada");
         telemetry.addLine("Garra iniciada");
