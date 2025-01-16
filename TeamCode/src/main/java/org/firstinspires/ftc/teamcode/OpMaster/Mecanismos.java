@@ -19,9 +19,6 @@ public class Mecanismos {
     int topeInferior= -100;
 
     public void initElevador(){
-        elevador1 = hardwareMap.get(DcMotor.class,"elevador1");
-        elevador2 = hardwareMap.get(DcMotor.class,"elevador2");
-
         elevador1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevador2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
