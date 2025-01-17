@@ -5,27 +5,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpMaster extends LinearOpMode {
-
-    //TODO: CUANDO SE BAJE LA BARREDORA ACTIVAR LA INGESTA
-    //TODO: CUANDO SUBA LA BARREDORA DESACTIVAR INGESTA
-
-    ///
-    /// SUBIR ELEVADOR: RIGHT BUMPER 2
-    /// BAJAR ELEVADOR: LEFT BUMPER 2
-    /// EXTENDER BARREDORA: RIGHT bumper 1
-    /// RETRAER BARREDORA: LEFT bumper 1
-    ///
-    /// subir articulacion barredora: a 1
-    /// bajar articukacion barredora: y 1
-    ///
-    /// EXTENDER CORREDERA GARRA: GAMEPAD 2 Y
-    /// RETRAER CORREDERA GARRA: GAMEPAD 2 A
-    /// MOVER HAND: RIGHT STICK
-    /// MOVER BRAZO: LEFT STICK
 
 @Override
     public void runOpMode() {
@@ -34,13 +19,25 @@ public class TeleOpMaster extends LinearOpMode {
     drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     robot.init(hardwareMap);
 
+    boolean tope = true;
+    boolean topeB = true;
+
     waitForStart();
 
         while (!isStopRequested()) {
             // ====ELEVADOR====
-            if(gamepad2.right_bumper && robot.elevador1.getCurrentPosition()>robot.eletopeSuperior && robot.elevador2.getCurrentPosition()>robot.eletopeSuperior){
+            if (gamepad2.back) { //DESACTIVAR TOPE
+                tope = false;
+            }else if (gamepad2.start && !tope){ //ACTIVAR TOPE Y RESETEAR ENCODER
+                robot.stopResetEconder(robot.elevador1, robot.elevador2);
+                tope = true;
+            }else if (tope && gamepad2.right_bumper && robot.elevador1.getCurrentPosition() > robot.eletopeSuperior && robot.elevador2.getCurrentPosition() > robot.eletopeSuperior) {
                 robot.subirElevador(0.9);
-            }else if (gamepad2.left_bumper && robot.elevador1.getCurrentPosition()<robot.eletopeInferior && robot.elevador2.getCurrentPosition()<robot.eletopeInferior){
+            }else if (tope && gamepad2.left_bumper && robot.elevador1.getCurrentPosition() < robot.eletopeInferior && robot.elevador2.getCurrentPosition() < robot.eletopeInferior) {
+                robot.bajarElevador(0.9);
+            }else if(!tope && gamepad2.right_bumper){
+                robot.subirElevador(0.9);
+            }else if(!tope && gamepad2.left_bumper){
                 robot.bajarElevador(0.9);
             }else {
                 robot.mantenerElevador();
@@ -48,9 +45,18 @@ public class TeleOpMaster extends LinearOpMode {
 
             // ====BARREDORA====
                 ///EXTENSION
-                if(gamepad1.right_bumper && robot.correderaBarredora.getCurrentPosition() > -650){
+                if (gamepad1.back) { //DESACTIVAR TOPE
+                    topeB = false;
+                }else if (gamepad1.start && !topeB){ //ACTIVAR TOPE Y RESETEAR ENCODER
+                    robot.stopResetEconder(robot.correderaBarredora);
+                    topeB = true;
+                }else if(topeB && gamepad1.right_bumper && robot.correderaBarredora.getCurrentPosition() > -650){
                     robot.extensionBarredora(0.8);
-                }else if (gamepad1.left_bumper && robot.correderaBarredora.getCurrentPosition() < 0){
+                }else if (topeB && gamepad1.left_bumper && robot.correderaBarredora.getCurrentPosition() < 0){
+                    robot.retraccionBarredora(0.8);
+                }else if(!topeB && gamepad1.right_bumper){
+                    robot.extensionBarredora(0.8);
+                }else if(!topeB && gamepad1.left_bumper){
                     robot.retraccionBarredora(0.8);
                 }else{
                     robot.mantenerBarredora();
@@ -67,55 +73,62 @@ public class TeleOpMaster extends LinearOpMode {
 
                 ///ARTICULACION BARREDORA
                 if (gamepad1.y){ //subir
-                    robot.barrArtIzq.setPosition(0.5);
+                    robot.subirArticulacionBarredora();
                 } else if (gamepad1.b) { //bajar
-                    robot.barrArtIzq.setPosition(0.8);
+                    robot.bajarArticulacionBarredora();
                 }
 
             // ====GARRA====
-                ///EXTENSION
-                if (gamepad2.y){
-                    robot.correderaGarra.setPosition(0.6);
-                    robot.correderaGarra2.setPosition(0.4);
-                }else if(gamepad2.a){
-                    robot.correderaGarra.setPosition(0.9);
-                    robot.correderaGarra2.setPosition(0.1);
+
+            robot.mantenerBrazo();
+            ///EXTENSION
+                if (gamepad2.y){ //EXTENSION
+                    robot.extenderCorrederaGarra();
+                }else if(gamepad2.a){ //RETRAER
+                    robot.retraerCorrederaGarra();
                 }
 
                 ///BRAZO GARRA
                 // MOVER BRAZO FRENTE
-                if (-gamepad2.left_stick_y > 0.3) {
-                    robot.brazoPos1 = Math.min(robot.brazoPos1 + robot.brazoIncremento, 1.0);
-                    robot.brazoPos2 = Math.max(robot.brazoPos2 - robot.brazoIncremento, 0.15);
-                    robot.moverBrazo(robot.brazoPos1, robot.brazoPos2);
+                if (-gamepad2.left_stick_y > 0.8 && robot.servoBrazo1.getPosition() > robot.topeFrontBrazoIzq && robot.servoBrazo2.getPosition() < robot.getTopeFrontBrazoDer) {
+                    robot.brazoEnfrente();
                 }
                 // MOVER BRAZO ATRÁS
-                else if (-gamepad2.left_stick_y < -0.3) {
-                    robot.brazoPos1 = Math.max(robot.brazoPos1 - robot.brazoIncremento, 0.15);
-                    robot.brazoPos2 = Math.min(robot.brazoPos2 + robot.brazoIncremento, 1.0);
-                    robot.moverBrazo(robot.brazoPos1, robot.brazoPos2);
+                else if (-gamepad2.left_stick_y < -0.8) {
+                    robot.brazoAtrás();
                 }
 
+                //RETRAER EXTENSION GARRA Y BRAZO
+                if (gamepad2.dpad_up){
+                    //retraer corredera
+                    robot.retraerCorrederaGarra();
+                    robot.brazoAtrás();
+                }
+
+                //
+                if (gamepad2.dpad_down){
+                    robot.cerrarGarra();
+                    robot.moverArtGarra(1);
+                    robot.moverBrazo(1,1);
+                    robot.abrirGarra();
+                }
 
                 ///ARTICULACIÓN GARRA
                 if (-gamepad2.right_stick_y > 0.3) {   // GARRA MANO FRENTE
-                    robot.servoPosicionHand = Math.min(robot.servoPosicionHand + robot.handIncremento, 1.0);
-                    robot.moverArtGarra(robot.servoPosicionHand);
+                    robot.garraArticulacionFront();
                 }
                 else if (-gamepad2.right_stick_y < -0.3) {    // GARRA MANO ATRAS
-                    robot.servoPosicionHand = Math.max(robot.servoPosicionHand - robot.handIncremento, 0.0);
-                    robot.moverArtGarra(robot.servoPosicionHand);
-                }
-                if (gamepad2.right_stick_button) {
-                    robot.moverArtGarra(robot.servoPosicionHand);
+                    robot.garraArticulacionAtras();
+                    robot.mantenerBrazo();
+
                 }
 
-
-            if (gamepad2.x){
-                robot.servoGarra.setPosition(0);
-            } else if (gamepad2.b) {
-                robot.servoGarra.setPosition(0.2);
-            }
+                ///GARRA
+                if (gamepad2.x){
+                    robot.cerrarGarra();
+                } else if (gamepad2.b) {
+                    robot.abrirGarra();
+                }
 
 
             // ====CHASIS===
@@ -130,14 +143,32 @@ public class TeleOpMaster extends LinearOpMode {
 
 
             // ====TELEMETRY====
-            telemetry.addData("ELEVADOR 1", robot.elevador1.getCurrentPosition());
-            telemetry.addData("ELEVADOR 2", robot.elevador2.getCurrentPosition());
-            telemetry.addData("CORREDERA", robot.correderaBarredora.getCurrentPosition());
+            telemetry.addData("Elevador Izq", robot.elevador1.getCurrentPosition());
+            telemetry.addData("Elevador Der", robot.elevador2.getCurrentPosition());
+            telemetry.addLine("");
 
+            telemetry.addData("Extension Barredora", robot.correderaBarredora.getCurrentPosition());
+            telemetry.addLine("");
 
-            telemetry.addData("B1 pos=", robot.servoBrazo1.getPosition());
-            telemetry.addData("B2 pos=", robot.servoBrazo2.getPosition());
-            telemetry.addData("Garra pos=", robot.servoGarra.getPosition());
+            telemetry.addData("Articulación barredora", robot.servoAriculacionBarredora.getPosition());
+            telemetry.addLine("");
+
+            telemetry.addData("Corredera Der", robot.servoCorrederaGarra2.getPosition());
+            telemetry.addData("Corredera Izq", robot.servoCorrederaGarra.getPosition());
+            telemetry.addLine("");
+
+            telemetry.addData("Brazo Izq", robot.servoBrazo1.getPosition());
+            telemetry.addData("Brazo Der", robot.servoBrazo2.getPosition());
+            telemetry.addLine("");
+
+            telemetry.addData("Articulacion Garra Posicion", robot.servoArticulacionGarra.getPosition());
+            telemetry.addLine("");
+
+            if (robot.servoGarra.getPosition() == 0.2){
+                telemetry.addLine("Garra abierta");
+            } else telemetry.addLine("Garra cerrada");
+            telemetry.addData("Garra", robot.servoGarra.getPosition());
+            telemetry.addLine("");
 
             telemetry.update();
 
