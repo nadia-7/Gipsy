@@ -37,11 +37,26 @@ public class Mecanismos {
 
     double servoPosicionHand = 0.5;
     double handIncremento =0.03;
-    double brazoPos1 =0.15;
-    double brazoPos2 =1;
+    double brazoPos1 = 1;
+    double brazoPos2 = 0.15;
     double brazoIncremento = 0.01;
+
+    double topeAtrasBrazoIzq =1;
+    double topeAtrasBrazoDer = 0.15;
     double topeFrontBrazoIzq =0.38;
-    double getTopeFrontBrazoDer = 0.77;
+    double topeFrontBrazoDer = 0.77;
+    double brazoCanastaDerPos = 0.3;
+    double brazoCanastaIzqPos= 0.85;
+
+    double articulacionGarraCanastaPos = 0.66; //LO MISMO Q ERECTO
+
+    //Subir la articulacion Garra en rango
+    double atrasBrazoIzqPos1GarraUp = 0.7;
+    double atrasBrazoIzqPos2GarraUp = 0.95;
+
+    double posicionArtGarraErecto = 0.66;
+    double garraArticPosMaxEnfrente = 0;
+    double garraArticPosMinAtras = 1;
 
 
     public void init(HardwareMap hardwareMap){
@@ -57,17 +72,17 @@ public class Mecanismos {
         servoAriculacionBarredora = hardwareMap.get(Servo.class, "bArtIzq");
 
         ///GARRA
-        servoCorrederaGarra = hardwareMap.get(Servo.class, "Corredera1");
-        servoCorrederaGarra2 = hardwareMap.get(Servo.class, "Corredera2");
+//        servoCorrederaGarra = hardwareMap.get(Servo.class, "Corredera1");
+//        servoCorrederaGarra2 = hardwareMap.get(Servo.class, "Corredera2");
         servoBrazo1 = hardwareMap.get(Servo.class, "brazo1");
         servoBrazo2 = hardwareMap.get(Servo.class, "brazo2");
         servoArticulacionGarra = hardwareMap.get(Servo.class, "hand");
         servoGarra = hardwareMap.get(Servo.class, "garra");
 
-        servoCorrederaGarra.setPosition(0.9); //1
-        servoCorrederaGarra2.setPosition(0.1); //0
+//        servoCorrederaGarra.setPosition(0.9); //1
+//        servoCorrederaGarra2.setPosition(0.1); //0
 
-        moverBrazo(1, 0.15);
+        //moverBrazo(brazoPos1, brazoPos2);
         moverArtGarra(0);
         cerrarGarra();
 
@@ -78,9 +93,29 @@ public class Mecanismos {
         elevador2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         zeroPower(elevador1, elevador2);
-        zeroPowerBrake(elevador1, elevador2);
+        //zeroPowerBrake(elevador1, elevador2);
 
     }
+
+    //COMBO
+    ///TOMAR SAMPLE BARREDRORA
+        public void autoTomarSample(){
+            cerrarGarra();
+            moverArtGarra(garraArticPosMaxEnfrente);
+            moverBrazoMaxEnfrente();
+            cerrarGarra();
+
+        }
+
+        public void autoDejarSample(){
+            cerrarGarra();
+            moverArtGarra(posicionArtGarraErecto);
+            moverBrazo(brazoCanastaIzqPos, brazoCanastaDerPos);
+        }
+
+        public void autoBarradoraAgarrarSample(){
+
+        }
 
     //ELEVADOR
     public void subirElevador(double POWER){
@@ -111,6 +146,10 @@ public class Mecanismos {
 
 
     }
+    public void mantenerElevadorBrake(){
+        zeroPower(elevador1, elevador2);
+        zeroPowerBrake(elevador1, elevador2);
+    }
 
     //BARREDORA
     public void extensionBarredora (double POWER){
@@ -126,6 +165,11 @@ public class Mecanismos {
         correderaBarredora.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         correderaBarredora.setPower(1);
     }
+    public void mantenerBarredoraBrake(){
+        zeroPower(correderaBarredora);
+        zeroPowerBrake(correderaBarredora);
+    }
+
     public void subirArticulacionBarredora(){
         servoAriculacionBarredora.setPosition(0.5);
     }
@@ -151,15 +195,28 @@ public class Mecanismos {
         servoBrazo1.setPosition(POS1);
         servoBrazo2.setPosition(POS2);
     }
+
+    //MINIMO
+    // 1: 1,
+    // 2: 0.15
+    // MAX
+    // 1:0.37,
+    // 2: 0.77
+    public void moverBrazoMaxEnfrente(){
+            moverBrazo(0.37, 0.77);
+    }
+    public void moverBrazoMinAtras(){
+            moverBrazo(1, 0.15);
+    }
     public void brazoEnfrente(){
-        brazoPos1 = Math.min(brazoPos1 + brazoIncremento, 1.0);
-        brazoPos2 = Math.max(brazoPos2 - brazoIncremento, 0.15);
+        brazoPos1 = brazoPos1 - brazoIncremento;
+        brazoPos2 = brazoPos2 + brazoIncremento;
         moverBrazo(brazoPos1, brazoPos2);
 
     }
     public void brazoAtrás(){
-        brazoPos1 = Math.max(brazoPos1 - brazoIncremento, 0.15);
-        brazoPos2 = Math.min(brazoPos2 + brazoIncremento, 1.0);
+        brazoPos1 = brazoPos1 + brazoIncremento;
+        brazoPos2 = brazoPos2 - brazoIncremento;
         moverBrazo(brazoPos1, brazoPos2);
     }
     public void mantenerBrazo(){
@@ -177,10 +234,10 @@ public class Mecanismos {
 
     }
     public void abrirGarra(){
-        servoGarra.setPosition(0.2);
+        servoGarra.setPosition(0.3);
     }
     public void cerrarGarra(){
-        servoGarra.setPosition(0.7); //1
+        servoGarra.setPosition(0.8); //1
     }
 
     //MOTORES
