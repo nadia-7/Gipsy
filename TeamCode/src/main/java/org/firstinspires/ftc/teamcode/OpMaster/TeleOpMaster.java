@@ -34,33 +34,33 @@ public class TeleOpMaster extends LinearOpMode {
             }else if (tope && gamepad1.right_bumper && robot.elevador1.getCurrentPosition() > robot.eletopeSuperior && robot.elevador2.getCurrentPosition() > robot.eletopeSuperior) {
                 robot.subirElevador(0.9);
             }else if (tope && gamepad1.left_bumper && robot.elevador1.getCurrentPosition() < robot.eletopeInferior && robot.elevador2.getCurrentPosition() < robot.eletopeInferior) {
-                robot.bajarElevador(0.9);
+                robot.bajarElevador(0.7);
             }else if(!tope && gamepad1.right_bumper){
                 robot.subirElevador(0.9);
             }else if(!tope && gamepad1.left_bumper){
-                robot.bajarElevador(0.9);
+                robot.bajarElevador(0.7);
             }else {
                 robot.mantenerElevador();
             }
 
             // ====BARREDORA====
                 ///EXTENSION
-                if(gamepad2.right_bumper && gamepad2.right_stick_button){
+                if(gamepad2.left_trigger > 0.3 && gamepad2.right_stick_button){
                     robot.extensionBarredora(0.1);
-                }else if (gamepad2.left_bumper && gamepad2.left_stick_button){
+                }else if (gamepad2.left_trigger > 0.3 && gamepad2.left_stick_button){
                     robot.retraccionBarredora(0.1);
                 }else if (gamepad2.back) { //DESACTIVAR TOPE
                     topeB = false;
                 }else if (gamepad2.start && !topeB){ //ACTIVAR TOPE Y RESETEAR ENCODER
                     robot.stopResetEconder(robot.correderaBarredora);
                     topeB = true;
-                }else if(topeB && gamepad2.right_bumper && robot.correderaBarredora.getCurrentPosition() > -650){
+                }else if(topeB && gamepad2.right_trigger > 0.3 && robot.correderaBarredora.getCurrentPosition() > -650){
                     robot.extensionBarredora(0.8);
-                }else if (topeB && gamepad2.left_bumper && robot.correderaBarredora.getCurrentPosition() < 0){
+                }else if (topeB && gamepad2.left_trigger > 0.3 && robot.correderaBarredora.getCurrentPosition() < 0){
                     robot.retraccionBarredora(0.8);
-                }else if(!topeB && gamepad2.right_bumper){
+                }else if(!topeB && gamepad2.right_trigger > 0.3){
                     robot.extensionBarredora(0.8);
-                }else if(!topeB && gamepad2.left_bumper){
+                }else if(!topeB && gamepad2.left_trigger > 0.3){
                     robot.retraccionBarredora(0.8);
                 }else{
                     robot.mantenerBarredora();
@@ -84,15 +84,13 @@ public class TeleOpMaster extends LinearOpMode {
 
             // ====GARRA====
                 ///COMBO AGARRAR SAMPLE BARREDORA AUTO
-                if (gamepad2.left_trigger > 0.3){
+                if (gamepad2.left_bumper){
                     robot.autoTomarSample();
-                    if (robot.servoBrazo1.getPosition() <=0.5){
-                        robot.abrirGarra();
-                    }
+                    robot.cerrarGarra();
                 }
 
                 ///COMBO ACOMODAR GARRA DEJAR SAMPLE
-                if (gamepad2.right_trigger > 0.3){
+                if (gamepad2.right_bumper){
                     robot.autoDejarSample();
                 }
 

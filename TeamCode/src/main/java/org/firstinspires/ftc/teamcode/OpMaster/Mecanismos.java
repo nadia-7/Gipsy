@@ -83,7 +83,7 @@ public class Mecanismos {
 //        servoCorrederaGarra2.setPosition(0.1); //0
 
         //moverBrazo(brazoPos1, brazoPos2);
-        moverArtGarra(0);
+        //moverArtGarra(0);
         cerrarGarra();
 
         stopResetEconder(elevador1, elevador2, correderaBarredora);
@@ -234,10 +234,10 @@ public class Mecanismos {
 
     }
     public void abrirGarra(){
-        servoGarra.setPosition(0.3);
+        servoGarra.setPosition(0.5);
     }
     public void cerrarGarra(){
-        servoGarra.setPosition(0.8); //1
+        servoGarra.setPosition(1); //1
     }
 
     //MOTORES

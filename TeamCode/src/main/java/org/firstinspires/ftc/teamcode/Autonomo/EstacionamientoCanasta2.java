@@ -6,7 +6,6 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -19,8 +18,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-public class EstacionamientoHuman extends LinearOpMode {
-    public static double DISTANCE = 75; // in
+public class EstacionamientoCanasta2 extends LinearOpMode {
+    public static double DISTANCE = 30; // in
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,13 +28,13 @@ public class EstacionamientoHuman extends LinearOpMode {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(DISTANCE)
+                .strafeRight(100)
                 .build();
 
         waitForStart();
 
         if (isStopRequested()) return;
-
+        sleep(5000);
         drive.followTrajectory(trajectory);
 
         Pose2d poseEstimate = drive.getPoseEstimate();

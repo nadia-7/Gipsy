@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.OpMaster.Mecanismos;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 /*
@@ -19,24 +20,34 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 @Config
 @Autonomous(group = "a")
-public class EstacionamientoHuman extends LinearOpMode {
-    public static double DISTANCE = 75; // in
+public class EstacionarSumergible extends LinearOpMode {
+    double distanciapapoi = 100;
 
     @Override
     public void runOpMode() throws InterruptedException {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
-
+        Mecanismos mecanismos = new Mecanismos();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
+        mecanismos.init(hardwareMap);
+
         Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(DISTANCE)
-                .build();
+                        .forward(30)
+                        .build();
 
         waitForStart();
 
-        if (isStopRequested()) return;
 
+        waitForStart();
+
+        //-1 meter
+        //1 sacar
+        if (isStopRequested()) return;
         drive.followTrajectory(trajectory);
+        mecanismos.ingesta.setPower(1);
+        sleep(500);
+        mecanismos.ingesta.setPower(0);
+
 
         Pose2d poseEstimate = drive.getPoseEstimate();
         telemetry.addData("finalX", poseEstimate.getX());
@@ -46,5 +57,5 @@ public class EstacionamientoHuman extends LinearOpMode {
 
         while (!isStopRequested() && opModeIsActive()) ;
     }
-}
 
+}
