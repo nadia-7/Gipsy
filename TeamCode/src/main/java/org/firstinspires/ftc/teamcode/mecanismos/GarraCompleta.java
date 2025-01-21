@@ -47,23 +47,23 @@ public class GarraCompleta extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            //                              CORREDERA
+            //                              CORREDERA+
             //Corredera Enfrente
             if (gamepad1.y){
-                moverCorredera(0.45, 0.55);
+                moverCorredera(0.6, 0.4);
             } else if (gamepad1.a) {
-                moverCorredera(0.0,1.0);
+                moverCorredera(0.9,0.1);
             }
 //                                          BRAZO
             // MOVER BRAZO FRENTE
             if (gamepad1.left_stick_y > 0.3) {
                 servoBPosition1 = Math.min(servoBPosition1 + Bincrement, 1.0);
-                servoBPosition2 = Math.max(servoBPosition2 - Bincrement, 0.4);
+                servoBPosition2 = Math.max(servoBPosition2 - Bincrement, 0.15);
                 moverBrazo(servoBPosition1, servoBPosition2);
             }
             // MOVER BRAZO ATRÁS
             else if (gamepad1.left_stick_y < -0.3) {
-                servoBPosition1 = Math.max(servoBPosition1 - Bincrement, 0.4);
+                servoBPosition1 = Math.max(servoBPosition1 - Bincrement, 0.15);
                 servoBPosition2 = Math.min(servoBPosition2 + Bincrement, 1.0);
                 moverBrazo(servoBPosition1, servoBPosition2);
             }

@@ -22,22 +22,28 @@ public class TeleOpMaster extends LinearOpMode {
     boolean tope = true;
     boolean topeB = true;
 
+    boolean segundoBarr = false;
+    boolean segundoBarrSoltado = false;
+    boolean terceroBarrSoltado = false;
+
+    int posBarr = 0;
+
     waitForStart();
 
         while (!isStopRequested()) {
             // ====ELEVADOR====
-            if (gamepad1.back) { //DESACTIVAR TOPE
+            if (gamepad2.back) { //DESACTIVAR TOPE
                 tope = false;
-            }else if (gamepad1.start && !tope){ //ACTIVAR TOPE Y RESETEAR ENCODER
+            }else if (gamepad2.start && !tope){ //ACTIVAR TOPE Y RESETEAR ENCODER
                 robot.stopResetEconder(robot.elevador1, robot.elevador2);
                 tope = true;
-            }else if (tope && gamepad1.right_bumper && robot.elevador1.getCurrentPosition() > robot.eletopeSuperior && robot.elevador2.getCurrentPosition() > robot.eletopeSuperior) {
+            }else if (tope && gamepad2.right_bumper && robot.elevador1.getCurrentPosition() > robot.eletopeSuperior && robot.elevador2.getCurrentPosition() > robot.eletopeSuperior) {
                 robot.subirElevador(0.9);
-            }else if (tope && gamepad1.left_bumper && robot.elevador1.getCurrentPosition() < robot.eletopeInferior && robot.elevador2.getCurrentPosition() < robot.eletopeInferior) {
+            }else if (tope && gamepad2.left_bumper && robot.elevador1.getCurrentPosition() < robot.eletopeInferior && robot.elevador2.getCurrentPosition() < robot.eletopeInferior) {
                 robot.bajarElevador(0.7);
-            }else if(!tope && gamepad1.right_bumper){
+            }else if(!tope && gamepad2.right_bumper){
                 robot.subirElevador(0.9);
-            }else if(!tope && gamepad1.left_bumper){
+            }else if(!tope && gamepad2.left_bumper){
                 robot.bajarElevador(0.7);
             }else {
                 robot.mantenerElevador();
@@ -45,25 +51,46 @@ public class TeleOpMaster extends LinearOpMode {
 
             // ====BARREDORA====
                 ///EXTENSION
-                if(gamepad2.left_trigger > 0.3 && gamepad2.right_stick_button){
-                    robot.extensionBarredora(0.1);
-                }else if (gamepad2.left_trigger > 0.3 && gamepad2.left_stick_button){
-                    robot.retraccionBarredora(0.1);
-                }else if (gamepad2.back) { //DESACTIVAR TOPE
-                    topeB = false;
-                }else if (gamepad2.start && !topeB){ //ACTIVAR TOPE Y RESETEAR ENCODER
-                    robot.stopResetEconder(robot.correderaBarredora);
-                    topeB = true;
-                }else if(topeB && gamepad2.right_trigger > 0.3 && robot.correderaBarredora.getCurrentPosition() > -650){
-                    robot.extensionBarredora(0.8);
-                }else if (topeB && gamepad2.left_trigger > 0.3 && robot.correderaBarredora.getCurrentPosition() < 0){
-                    robot.retraccionBarredora(0.8);
-                }else if(!topeB && gamepad2.right_trigger > 0.3){
-                    robot.extensionBarredora(0.8);
-                }else if(!topeB && gamepad2.left_trigger > 0.3){
-                    robot.retraccionBarredora(0.8);
-                }else{
-                    robot.mantenerBarredora();
+            if(gamepad1.right_bumper){
+                posBarr = 2;
+            } else if (gamepad1.left_bumper && !segundoBarr) {
+                posBarr = 1;
+                segundoBarr = true;
+            }
+            if(!gamepad1.left_bumper){
+                if(segundoBarr && !segundoBarrSoltado){
+                    segundoBarrSoltado = true;
+                } else if (posBarr == 0) {
+                    segundoBarrSoltado = false;
+                    segundoBarr = false;
+                }
+            }
+            if(gamepad1.left_bumper && segundoBarr && segundoBarrSoltado){
+                posBarr = 0;
+            }
+            if (gamepad1.back) { //DESACTIVAR TOPE
+                topeB = false;
+            }else if (gamepad1.start && !topeB){ //ACTIVAR TOPE Y RESETEAR ENCODER
+                robot.stopResetEconder(robot.correderaBarredora);
+                topeB = true;
+            }
+
+            switch (posBarr){
+                    case 0:
+                        if(topeB && robot.correderaBarredora.getCurrentPosition() < 0){
+                            robot.retraccionBarredora(0.7);
+                        } else {robot.mantenerBarredora();}
+                        break;
+                    case 1:
+                        if(robot.correderaBarredora.getCurrentPosition() < -401){
+                        robot.retraccionBarredora(0.7);
+                        } else {robot.mantenerBarredora();}
+                        break;
+                    case 2:
+                        if(topeB && robot.correderaBarredora.getCurrentPosition() > -650){
+                            robot.extensionBarredora(0.7);
+                        } else {robot.mantenerBarredora();}
+                        break;
                 }
 
                 ///INGESTA
@@ -84,13 +111,13 @@ public class TeleOpMaster extends LinearOpMode {
 
             // ====GARRA====
                 ///COMBO AGARRAR SAMPLE BARREDORA AUTO
-                if (gamepad2.left_bumper){
+                if (gamepad2.right_trigger > 0.2){
                     robot.autoTomarSample();
                     robot.cerrarGarra();
                 }
 
                 ///COMBO ACOMODAR GARRA DEJAR SAMPLE
-                if (gamepad2.right_bumper){
+                if (gamepad2.left_trigger > 0.2){
                     robot.autoDejarSample();
                 }
 

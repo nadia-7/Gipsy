@@ -27,9 +27,9 @@ public class EstacionamientoCanasta2 extends LinearOpMode {
 
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                .strafeRight(100)
-                .build();
+            Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
+                    .strafeRight(100)
+                    .build();
 
         waitForStart();
 
