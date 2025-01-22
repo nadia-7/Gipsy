@@ -18,7 +18,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 
 
-@Config
+//@Config
 @Autonomous(group = "a")
 public class EstacionarSumergible extends LinearOpMode {
     double distanciapapoi = 100;

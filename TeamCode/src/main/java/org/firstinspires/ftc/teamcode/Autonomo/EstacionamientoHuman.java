@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 
 
-@Config
+//@Config
 @Autonomous(group = "a")
 public class EstacionamientoHuman extends LinearOpMode {
     public static double DISTANCE = 75; // in

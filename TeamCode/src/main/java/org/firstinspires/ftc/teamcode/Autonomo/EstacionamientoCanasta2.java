@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 
 
-@Config
+//@Config
 @Autonomous(group = "a")
 public class EstacionamientoCanasta2 extends LinearOpMode {
     public static double DISTANCE = 30; // in

@@ -16,6 +16,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.internal.system.Misc;
+import org.firstinspires.ftc.teamcode.OpMaster.Mecanismos;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.util.LoggingUtil;
 import org.firstinspires.ftc.teamcode.util.RegressionUtil;
@@ -34,15 +35,17 @@ import java.util.List;
  *      regression.
  */
 
-@Config
+//@Config
 
 @Autonomous(group = "drive")
 public class AutomaticFeedforwardTuner extends LinearOpMode {
     public static double MAX_POWER = 0.7;
     public static double DISTANCE = 100; // in
 
+    Mecanismos robot = new Mecanismos();
     @Override
     public void runOpMode() throws InterruptedException {
+        robot.init(hardwareMap);
         if (RUN_USING_ENCODER) {
             RobotLog.setGlobalErrorMsg("Feedforward constants usually don't need to be tuned " +
                     "when using the built-in drive motor velocity PID.");
@@ -68,6 +71,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
 
         boolean fitIntercept = false;
         while (!isStopRequested()) {
+            robot.mantenerBarredora();
             if (gamepad1.y) {
                 fitIntercept = true;
                 while (!isStopRequested() && gamepad1.y) {
@@ -113,6 +117,7 @@ public class AutomaticFeedforwardTuner extends LinearOpMode {
 
         double startTime = clock.seconds();
         while (!isStopRequested()) {
+
             double elapsedTime = clock.seconds() - startTime;
             if (elapsedTime > rampTime) {
                 break;

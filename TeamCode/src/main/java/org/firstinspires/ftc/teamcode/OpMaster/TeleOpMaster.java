@@ -51,47 +51,26 @@ public class TeleOpMaster extends LinearOpMode {
 
             // ====BARREDORA====
                 ///EXTENSION
-            if(gamepad1.right_bumper){
-                posBarr = 2;
-            } else if (gamepad1.left_bumper && !segundoBarr) {
-                posBarr = 1;
-                segundoBarr = true;
-            }
-            if(!gamepad1.left_bumper){
-                if(segundoBarr && !segundoBarrSoltado){
-                    segundoBarrSoltado = true;
-                } else if (posBarr == 0) {
-                    segundoBarrSoltado = false;
-                    segundoBarr = false;
-                }
-            }
-            if(gamepad1.left_bumper && segundoBarr && segundoBarrSoltado){
-                posBarr = 0;
-            }
-            if (gamepad1.back) { //DESACTIVAR TOPE
+            if(gamepad1.right_bumper && gamepad2.right_stick_button){
+                robot.extensionBarredora(0.1);
+            }else if (gamepad1.left_bumper && gamepad2.left_stick_button){
+                robot.retraccionBarredora(0.1);
+            }else if (gamepad1.back) { //DESACTIVAR TOPE
                 topeB = false;
             }else if (gamepad1.start && !topeB){ //ACTIVAR TOPE Y RESETEAR ENCODER
                 robot.stopResetEconder(robot.correderaBarredora);
                 topeB = true;
+            }else if(topeB && gamepad1.right_bumper && robot.correderaBarredora.getCurrentPosition() > -650){
+                robot.extensionBarredora(0.8);
+            }else if (topeB && gamepad1.left_bumper && robot.correderaBarredora.getCurrentPosition() < 0){
+                robot.retraccionBarredora(0.6);
+            }else if(!topeB && gamepad1.right_bumper){
+                robot.extensionBarredora(0.8);
+            }else if(!topeB && gamepad1.left_bumper){
+                robot.retraccionBarredora(0.6);
+            }else{
+                robot.mantenerBarredora();
             }
-
-            switch (posBarr){
-                    case 0:
-                        if(topeB && robot.correderaBarredora.getCurrentPosition() < 0){
-                            robot.retraccionBarredora(0.7);
-                        } else {robot.mantenerBarredora();}
-                        break;
-                    case 1:
-                        if(robot.correderaBarredora.getCurrentPosition() < -401){
-                        robot.retraccionBarredora(0.7);
-                        } else {robot.mantenerBarredora();}
-                        break;
-                    case 2:
-                        if(topeB && robot.correderaBarredora.getCurrentPosition() > -650){
-                            robot.extensionBarredora(0.7);
-                        } else {robot.mantenerBarredora();}
-                        break;
-                }
 
                 ///INGESTA
                 if (gamepad1.a){//introducir

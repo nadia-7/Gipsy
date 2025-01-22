@@ -13,7 +13,12 @@ import org.firstinspires.ftc.teamcode.util.Encoder;
 import java.util.Arrays;
 import java.util.List;
 
-//eliminamos lineas 50 51 C:
+
+//TODO: ACOMODAR LOS ENCODERS
+///posicion actual
+/// encoder derecho CONTROL 1
+/// encoder izquiero EXP 3
+/// encoder front EXP 1
 /*
  * Sample tracking wheel localizer implementation assuming the standard configuration:
  *
@@ -33,11 +38,11 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 0.62992125984; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 10.39;// in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = -0.5; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 10.377;//10.375;// in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = -2; // in; offset of the lateral wheel
 
-    public static double X_MULTIPLIER = 0.99562037359;//1.08095688079391936; // Multiplier in the X direction
-    public static double Y_MULTIPLIER = 0.99869762432; //1.08557288430042028; // Multiplier in the Y direction
+    public static double X_MULTIPLIER = 72.126/72.62;//0.99562037359;// Multiplier in the X direction
+    public static double Y_MULTIPLIER =72.126/72.16; //0.99869762432;// Multiplier in the Y direction
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
@@ -60,15 +65,13 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncPositions = lastTrackingEncPositions;
        lastEncVels = lastTrackingEncVels;
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "enfrenteIzq"));
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "atrasDer"));
-        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "enfrenteDer"));
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "ingesta")); // PUERTO 0 o 3 ahora expansion 3
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "atrasDer")); //PUERTO 0 o 3 ahora control 1
+        frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "enfrenteIzq")); //PUERTO 2 ahora expansion 1
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
         leftEncoder.setDirection(Encoder.Direction.REVERSE);
         rightEncoder.setDirection(Encoder.Direction.REVERSE);
-
-
     }
 
     public static double encoderTicksToInches(double ticks) {

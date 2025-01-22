@@ -23,6 +23,7 @@ import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.OpMaster.Mecanismos;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 import java.util.Objects;
@@ -46,6 +47,7 @@ import java.util.Objects;
 @Autonomous(group = "drive")
 public class ManualFeedforwardTuner extends LinearOpMode {
     public static double DISTANCE = 72; // in
+    Mecanismos robot = new Mecanismos();
 
     private FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -66,6 +68,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        robot.init(hardwareMap);
         if (RUN_USING_ENCODER) {
             RobotLog.setGlobalErrorMsg("Feedforward constants usually don't need to be tuned " +
                     "when using the built-in drive motor velocity PID.");
@@ -85,6 +88,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
         telemetry.update();
         telemetry.clearAll();
 
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -95,11 +99,14 @@ public class ManualFeedforwardTuner extends LinearOpMode {
 
 
         while (!isStopRequested()) {
+            robot.mantenerBarredora();
+
             telemetry.addData("mode", mode);
 
             switch (mode) {
                 case TUNING_MODE:
                     if (gamepad1.y) {
+                        robot.mantenerBarredora();
                         mode = Mode.DRIVER_MODE;
                     }
 
@@ -131,6 +138,7 @@ public class ManualFeedforwardTuner extends LinearOpMode {
                     break;
                 case DRIVER_MODE:
                     if (gamepad1.b) {
+                        robot.mantenerBarredora();
                         mode = Mode.TUNING_MODE;
                         movingForwards = true;
                         activeProfile = generateProfile(movingForwards);
