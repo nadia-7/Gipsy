@@ -1,16 +1,11 @@
-package org.firstinspires.ftc.teamcode.OpMaster;
+package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
-//TODO: PONER TOPE AL BRAZO
+//AÑA
+//TODO: Cambiar topes
 //TODO: HACER MÉTODOS PARA LOS DRIVERS
 
 public class Mecanismos {
@@ -34,6 +29,7 @@ public class Mecanismos {
     public Servo servoBrazo2; //0 control
     public Servo servoArticulacionGarra; //1 control
     public Servo servoGarra; //3 control
+    public Servo servoRotacion;
 
     double servoPosicionHand = 0.5;
     double handIncremento =0.03;
@@ -58,6 +54,9 @@ public class Mecanismos {
     double garraArticPosMaxEnfrente = 0;
     double garraArticPosMinAtras = 1;
 
+    double rotacionZero= 0.97; //ARRIBA
+    double rotacionFinal = 0.29;
+
 
     public void init(HardwareMap hardwareMap){
 
@@ -78,12 +77,14 @@ public class Mecanismos {
         servoBrazo2 = hardwareMap.get(Servo.class, "brazo2");
         servoArticulacionGarra = hardwareMap.get(Servo.class, "hand");
         servoGarra = hardwareMap.get(Servo.class, "garra");
+        servoRotacion = hardwareMap.get(Servo.class, "rotacionGarra");
 
 //        servoCorrederaGarra.setPosition(0.9); //1
 //        servoCorrederaGarra2.setPosition(0.1); //0
 
         //moverBrazo(brazoPos1, brazoPos2);
         //moverArtGarra(0);
+        rotacionZeroGarra();
         cerrarGarra();
 
         stopResetEconder(elevador1, elevador2, correderaBarredora);
@@ -96,6 +97,7 @@ public class Mecanismos {
         //zeroPowerBrake(elevador1, elevador2);
 
     }
+
 
     //COMBO
     ///TOMAR SAMPLE BARREDRORA
@@ -238,6 +240,12 @@ public class Mecanismos {
     }
     public void cerrarGarra(){
         servoGarra.setPosition(1); //1
+    }
+    public void rotacionZeroGarra(){
+        servoRotacion.setPosition(rotacionZero);
+    }
+    public void rotacionFinal(){
+        servoRotacion.setPosition(rotacionFinal);
     }
 
     //MOTORES

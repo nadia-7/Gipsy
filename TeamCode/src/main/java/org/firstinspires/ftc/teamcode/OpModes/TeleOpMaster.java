@@ -1,13 +1,10 @@
-package org.firstinspires.ftc.teamcode.OpMaster;
+package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpMaster extends LinearOpMode {
@@ -31,7 +28,8 @@ public class TeleOpMaster extends LinearOpMode {
     waitForStart();
 
         while (!isStopRequested()) {
-            // ====ELEVADOR====
+
+//_====ELEVADOR====
             if (gamepad2.back) { //DESACTIVAR TOPE
                 tope = false;
             }else if (gamepad2.start && !tope){ //ACTIVAR TOPE Y RESETEAR ENCODER
@@ -49,8 +47,8 @@ public class TeleOpMaster extends LinearOpMode {
                 robot.mantenerElevador();
             }
 
-            // ====BARREDORA====
-                ///EXTENSION
+//_====BARREDORA====
+        //_ EXTENSION
             if(gamepad1.right_bumper && gamepad2.right_stick_button){
                 robot.extensionBarredora(0.1);
             }else if (gamepad1.left_bumper && gamepad2.left_stick_button){
@@ -72,7 +70,8 @@ public class TeleOpMaster extends LinearOpMode {
                 robot.mantenerBarredora();
             }
 
-                ///INGESTA
+
+        //_ INGESTA
                 if (gamepad1.a){//introducir
                     robot.ingesta.setPower(-1.0);
                 } else if (gamepad1.x){
@@ -81,14 +80,14 @@ public class TeleOpMaster extends LinearOpMode {
                     robot.ingesta.setPower(0.0);
                 }
 
-                ///ARTICULACION BARREDORA
+        //_ ARTICULACION BARREDORA
                 if (gamepad1.y){ //subir
                     robot.subirArticulacionBarredora();
                 } else if (gamepad1.b) { //bajar
                     robot.bajarArticulacionBarredora();
                 }
 
-            // ====GARRA====
+//_====GARRA====
                 ///COMBO AGARRAR SAMPLE BARREDORA AUTO
                 if (gamepad2.right_trigger > 0.2){
                     robot.autoTomarSample();
@@ -99,13 +98,6 @@ public class TeleOpMaster extends LinearOpMode {
                 if (gamepad2.left_trigger > 0.2){
                     robot.autoDejarSample();
                 }
-
-                                                          ///EXTENSION
-                                        //                if (gamepad2.y){ //EXTENSION
-                                        //                    robot.extenderCorrederaGarra();
-                                        //                }else if(gamepad2.a){ //RETRAER
-                                        //                    robot.retraerCorrederaGarra();
-                                        //                }
 
                 ///BRAZO GARRA
                 if (gamepad2.dpad_up && robot.servoBrazo1.getPosition() >= robot.topeFrontBrazoIzq && robot.servoBrazo2.getPosition() <= robot.topeFrontBrazoDer) {
