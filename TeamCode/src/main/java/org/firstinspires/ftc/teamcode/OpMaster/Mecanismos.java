@@ -107,7 +107,7 @@ public class Mecanismos {
 
         }
 
-        public void autoDejarSample(){
+        public void autoEncestar(){
             cerrarGarra();
             moverArtGarra(posicionArtGarraErecto);
             moverBrazo(brazoCanastaIzqPos, brazoCanastaDerPos);
@@ -232,6 +232,9 @@ public class Mecanismos {
         servoPosicionHand = Math.max(servoPosicionHand - handIncremento, 0.0);
         moverArtGarra(servoPosicionHand);
 
+    }
+    public void hacerPuntos(){
+            telemetry.addLine("xd");
     }
     public void abrirGarra(){
         servoGarra.setPosition(0.5);

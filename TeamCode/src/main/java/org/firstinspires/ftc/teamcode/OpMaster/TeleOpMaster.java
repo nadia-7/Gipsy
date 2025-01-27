@@ -11,7 +11,39 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 @TeleOp
 public class TeleOpMaster extends LinearOpMode {
+/*
+ ===GPAD 1===
+ -[a] = TRAGAR
+ -[x] = ESCUPIR
+ -[b] = BAREDORA ↓
+ -[y] = BARREDORA ↑
+ -[Bum_L] = BARREDORA ↓
+ -[Bum_R] = BARREDORA ↑
+ -[Trig_L] =
+ -[Trig_R] =
+ -[joy_L] =
+ -[joy_R] =
+ -[Dpad_↑] =
+ -[Dpad_↓] =
+ -[Dpad_→] =
+ -[Dpad_←] =
 
+ ===GPAD2===
+ -[a] =
+ -[b] = GARRA ☒
+ -[x] = GARRA ☑
+ -[y] =
+ -[Bum_L] = ELEVADOR ↓
+ -[Bum_R] = ELEVADOR ↑
+ -[Trig_L] = COMBO ENCESTAR
+ -[Trig_R] = COMBO TOMAR SAMPLE
+ -[joy_L] =
+ -[joy_R] = ARTICULACIÓN GARRA ↑↓
+ -[Dpad_↑] = BRAZO GARRA ↑
+ -[Dpad_↓] = BRAZO GARRA ↓
+ -[Dpad_→] =
+ -[Dpad_←] =
+ */
 @Override
     public void runOpMode() {
     Mecanismos robot = new Mecanismos();
@@ -31,7 +63,7 @@ public class TeleOpMaster extends LinearOpMode {
     waitForStart();
 
         while (!isStopRequested()) {
-            // ====ELEVADOR====
+            // =========================ELEVADOR===============================
             if (gamepad2.back) { //DESACTIVAR TOPE
                 tope = false;
             }else if (gamepad2.start && !tope){ //ACTIVAR TOPE Y RESETEAR ENCODER
@@ -49,28 +81,49 @@ public class TeleOpMaster extends LinearOpMode {
                 robot.mantenerElevador();
             }
 
-            // ====BARREDORA====
+            // ========================BARREDORA=============================
                 ///EXTENSION
-            if(gamepad1.right_bumper && gamepad2.right_stick_button){
-                robot.extensionBarredora(0.1);
-            }else if (gamepad1.left_bumper && gamepad2.left_stick_button){
-                robot.retraccionBarredora(0.1);
-            }else if (gamepad1.back) { //DESACTIVAR TOPE
+            if(gamepad1.right_bumper){
+                posBarr = 2;
+            } else if (gamepad1.left_bumper && !segundoBarr) {
+                posBarr = 1;
+                segundoBarr = true;
+            }
+            if(!gamepad1.left_bumper){
+                if(segundoBarr && !segundoBarrSoltado){
+                    segundoBarrSoltado = true;
+                } else if (posBarr == 0) {
+                    segundoBarrSoltado = false;
+                    segundoBarr = false;
+                }
+            }
+            if(gamepad1.left_bumper && segundoBarr && segundoBarrSoltado){
+                posBarr = 0;
+            }
+            if (gamepad1.back) { //DESACTIVAR TOPE
                 topeB = false;
             }else if (gamepad1.start && !topeB){ //ACTIVAR TOPE Y RESETEAR ENCODER
                 robot.stopResetEconder(robot.correderaBarredora);
                 topeB = true;
-            }else if(topeB && gamepad1.right_bumper && robot.correderaBarredora.getCurrentPosition() > -650){
-                robot.extensionBarredora(0.8);
-            }else if (topeB && gamepad1.left_bumper && robot.correderaBarredora.getCurrentPosition() < 0){
-                robot.retraccionBarredora(0.6);
-            }else if(!topeB && gamepad1.right_bumper){
-                robot.extensionBarredora(0.8);
-            }else if(!topeB && gamepad1.left_bumper){
-                robot.retraccionBarredora(0.6);
-            }else{
-                robot.mantenerBarredora();
             }
+
+            switch (posBarr){
+                    case 0:
+                        if(topeB && robot.correderaBarredora.getCurrentPosition() < 0){
+                            robot.retraccionBarredora(0.7);
+                        } else {robot.mantenerBarredora();}
+                        break;
+                    case 1:
+                        if(robot.correderaBarredora.getCurrentPosition() < -401){
+                        robot.retraccionBarredora(0.7);
+                        } else {robot.mantenerBarredora();}
+                        break;
+                    case 2:
+                        if(topeB && robot.correderaBarredora.getCurrentPosition() > -650){
+                            robot.extensionBarredora(0.7);
+                        } else {robot.mantenerBarredora();}
+                        break;
+                }
 
                 ///INGESTA
                 if (gamepad1.a){//introducir
@@ -88,17 +141,29 @@ public class TeleOpMaster extends LinearOpMode {
                     robot.bajarArticulacionBarredora();
                 }
 
-            // ====GARRA====
+            // ======================GARRA==========================
                 ///COMBO AGARRAR SAMPLE BARREDORA AUTO
                 if (gamepad2.right_trigger > 0.2){
                     robot.autoTomarSample();
                     robot.cerrarGarra();
                 }
 
-                ///COMBO ACOMODAR GARRA DEJAR SAMPLE
+                ///COMBO ACOMODAR GARRA ENCESTAR
                 if (gamepad2.left_trigger > 0.2){
-                    robot.autoDejarSample();
+                    robot.autoEncestar();
                 }
+                //Hacer puntos
+                if (gamepad1.dpad_up && gamepad1.dpad_up &&
+                    gamepad1.dpad_down && gamepad1.dpad_down &&
+                    gamepad1.dpad_left && gamepad1.dpad_right &&
+                    gamepad1.dpad_left &&gamepad1.dpad_right &&
+                    gamepad1.b && gamepad1.a){
+                robot.hacerPuntos();
+                }
+                //POS TOMAR SPECIMEN
+                //POS COLGARME EL ESPECIMEN
+
+
 
                                                           ///EXTENSION
                                         //                if (gamepad2.y){ //EXTENSION
