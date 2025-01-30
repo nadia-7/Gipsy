@@ -15,10 +15,6 @@ import java.util.List;
 
 
 //TODO: ACOMODAR LOS ENCODERS
-///posicion actual
-/// encoder derecho CONTROL 1
-/// encoder izquiero EXP 3
-/// encoder front EXP 1
 /*
  * Sample tracking wheel localizer implementation assuming the standard configuration:
  *
@@ -39,7 +35,7 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
     public static double LATERAL_DISTANCE = 10.377;//10.375;// in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = -2; // in; offset of the lateral wheel
+    public static double FORWARD_OFFSET = -0.5; // in; offset of the lateral wheel
 
     public static double X_MULTIPLIER = 72.126/72.62;//0.99562037359;// Multiplier in the X direction
     public static double Y_MULTIPLIER =72.126/72.16; //0.99869762432;// Multiplier in the Y direction
@@ -65,8 +61,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         lastEncPositions = lastTrackingEncPositions;
        lastEncVels = lastTrackingEncVels;
 
-        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "ingesta")); // PUERTO 0 o 3 ahora expansion 3
-        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "atrasDer")); //PUERTO 0 o 3 ahora control 1
+        leftEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "atrasDer")); // PUERTO 0 o 3 ahora expansion 3
+        rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "enfrenteDer")); //PUERTO 0 o 3 ahora control 1
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "enfrenteIzq")); //PUERTO 2 ahora expansion 1
 
         // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)

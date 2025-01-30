@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
  * and op modes themselves.
  */
 
-public class DriveConstants {
+public class  DriveConstants {
 
     /*
      * These are motor constants that should be listed online for your motors.
@@ -90,14 +90,14 @@ public class DriveConstants {
      */
     public static double MAX_VEL = 70;
     public static double MAX_ACCEL = 60;
-    public static double MAX_ANG_VEL = 4.561;
+    public static double MAX_ANG_VEL = 4.4;
     public static double MAX_ANG_ACCEL = Math.toRadians(360);
 
 
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =
-            RevHubOrientationOnRobot.LogoFacingDirection.LEFT;
+            RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
     public static RevHubOrientationOnRobot.UsbFacingDirection USB_FACING_DIR =
-            RevHubOrientationOnRobot.UsbFacingDirection.UP;
+            RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
 
 

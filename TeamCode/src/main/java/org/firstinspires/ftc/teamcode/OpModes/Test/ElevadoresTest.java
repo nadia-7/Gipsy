@@ -1,9 +1,13 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.OpModes.Test;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-//FIXME: ASIGNAR TOPES AL ELEVADOR
+import org.firstinspires.ftc.teamcode.OpModes.Mecanismos;
+
+//TODO: ASIGNAR TOPES AL ELEVADOR
+@TeleOp
 public class ElevadoresTest extends LinearOpMode {
     @Override
     public void runOpMode() {
@@ -34,9 +38,9 @@ public class ElevadoresTest extends LinearOpMode {
                 robot.subirElevador(0.9);
             } else if (tope && gamepad2.left_bumper && robot.elevador1.getCurrentPosition() < robot.eletopeInferior && robot.elevador2.getCurrentPosition() < robot.eletopeInferior) {
                 robot.bajarElevador(0.7);
-            } else*/ if (gamepad2.right_bumper) {
+            } else*/ if (/*!tope && */gamepad2.right_bumper) {
                 robot.subirElevador(0.9);
-            } else if (gamepad2.left_bumper) {
+            } else if (/*!tope && */gamepad2.left_bumper) {
                 robot.bajarElevador(0.7);
             } else {
                 robot.mantenerElevador();
@@ -44,7 +48,7 @@ public class ElevadoresTest extends LinearOpMode {
 
             telemetry.addData("Elevador Izq", robot.elevador1.getCurrentPosition());
             telemetry.addData("Elevador Der", robot.elevador2.getCurrentPosition());
-            telemetry.addLine("");
+            telemetry.update();
 
         }
     }}
