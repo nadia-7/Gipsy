@@ -46,8 +46,9 @@ public class Mecanismos {
     double brazoCanastaIzqPos= 0.41;
 
     //TODO: REVISAR VALORES
-    double posicionArtGarraErecto = 0.35;
-    double garraArticPosMaxEnfrente = 0.84;
+    double posicionArtGarraAtras = 0;
+    double posicionArtGarraErecto = 0.3;
+    double garraArticPosMaxEnfrente = 0.7;
 
     //note: Valores rotacion GARRA
     double rotacionZero= 0.97; //ARRIBA
@@ -71,6 +72,7 @@ public class Mecanismos {
         servoGarra = hardwareMap.get(Servo.class, "garra");
         servoRotacion = hardwareMap.get(Servo.class, "rotacionGarra");
 
+        servoArticulacionGarra.setPosition(0.3);
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
         runWithoutEncoder(ingesta);
@@ -177,7 +179,7 @@ public class Mecanismos {
 
     //TODO: CHECAR QUE FUNCIONEN ESTOS 2 MÉTODOS
         public void garraArticulacionFront(double servoPosicionHand){
-            servoPosicionHand = Math.min(servoPosicionHand + articulacionIncremento, 1.0);
+            servoPosicionHand = Math.min(servoPosicionHand + articulacionIncremento,0.7);
             moverArtGarra(servoPosicionHand);
         }
         public void garraArticulacionAtras(double servoPosicionHand){
