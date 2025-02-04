@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 //AÑAAÑAÑAÑÑAÑAÑAÑÑAÑAÑÑAÑÑAÑAÑAÑAAAAA´
-//TODO: Cambiar topes BARREDORA
-//TODO: Tope brazo hacia atrás
 //TODO: AGREGAR MÉTODOS CON TWIST (ROTACION)
 //TODO: EN DUDA SI AGREGAR UNA FUNCION PARA DISMINUIR VELOCIDAD DE LA BARREDORA
 
@@ -31,24 +29,21 @@ public class Mecanismos {
     public Servo servoRotacion;
 
     //_ CONSTANTES
-    double articulacionIncremento =0.03;
+    double articulacionIncremento =0.01;
     double brazoIncremento = 0.01;
 
     //note: Topes BRAZO
-    //TODO: CAMBIAR TOPES BRAZO
-    double topeAtrasBrazoIzq =0.71;
-    double topeAtrasBrazoDer = 0.29;
-    double topeFrontBrazoIzq =0.01;
-    double topeFrontBrazoDer = 0.99;
-
-    //TODO: CAMBIAR VALORES BRAZO
-    double brazoCanastaDerPos = 0.59;
-    double brazoCanastaIzqPos= 0.41;
+    //_ atras
+    double topeAtrasBrazo1Izq =0.5;//note: ATRAS 100% 0.3;
+    double topeAtrasBrazo2Der = 0.48;//NOTE: ATRAS 100% 0.7;
+    //_ enfrente
+    double topeFrontBrazo1Izq =1;
+    double topeFrontBrazo2Der = 0.01;
 
     //TODO: REVISAR VALORES
     double posicionArtGarraAtras = 0;
-    double posicionArtGarraErecto = 0.3;
-    double garraArticPosMaxEnfrente = 0.7;
+    double posicionArtGarraErecto = 0.2294;
+    double garraArticPosMaxEnfrente = 0.52;
 
     //note: Valores rotacion GARRA
     double rotacionZero= 0.97; //ARRIBA
@@ -72,7 +67,8 @@ public class Mecanismos {
         servoGarra = hardwareMap.get(Servo.class, "garra");
         servoRotacion = hardwareMap.get(Servo.class, "rotacionGarra");
 
-        servoArticulacionGarra.setPosition(0.3);
+        moverBrazoMaxEnfrente();
+        moverArtGarra(garraArticPosMaxEnfrente); //erecto
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
         runWithoutEncoder(ingesta);
@@ -92,7 +88,7 @@ public class Mecanismos {
         public void autoDejarSampleCanastaChamber(){
             cerrarGarra();
             moverArtGarra(posicionArtGarraErecto);
-            moverBrazo(brazoCanastaIzqPos, brazoCanastaDerPos);
+            moverBrazo(topeAtrasBrazo1Izq, topeAtrasBrazo2Der);
         }
 
 
@@ -154,21 +150,19 @@ public class Mecanismos {
             servoBrazo2.setPosition(POS2);
         }
         public void moverBrazoMaxEnfrente(){
-                moverBrazo(0.01, 0.99);
+                moverBrazo(topeFrontBrazo1Izq, topeFrontBrazo2Der);
         }
         public void moverBrazoMinAtras() {
-            moverBrazo(0.71, 0.15);
+            moverBrazo(topeAtrasBrazo1Izq, topeAtrasBrazo2Der);
         }
-
-    //TODO: CHECAR QUE FUNCIONEN ESTOS 2 MÉTODOS
         public void brazoEnfrente(double brazoPos1, double brazoPos2){
-                brazoPos1 = brazoPos1 - brazoIncremento;
-                brazoPos2 = brazoPos2 + brazoIncremento;
+                brazoPos1 = brazoPos1 + brazoIncremento;
+                brazoPos2 = brazoPos2 - brazoIncremento;
                 moverBrazo(brazoPos1, brazoPos2);
             }
         public void brazoAtras(double brazoPos1, double brazoPos2){
-            brazoPos1 = brazoPos1 + brazoIncremento;
-            brazoPos2 = brazoPos2 - brazoIncremento;
+            brazoPos1 = brazoPos1 - brazoIncremento;
+            brazoPos2 = brazoPos2 + brazoIncremento;
             moverBrazo(brazoPos1, brazoPos2);
         }
         public void mantenerBrazo(){
@@ -176,21 +170,24 @@ public class Mecanismos {
             servoBrazo2.setPosition(servoBrazo2.getPosition());
 
         }
-
-    //TODO: CHECAR QUE FUNCIONEN ESTOS 2 MÉTODOS
+//note: rango articulacion: 0.7 hasta abajo y 0 hasta atras, 0.3 es erechto
         public void garraArticulacionFront(double servoPosicionHand){
-            servoPosicionHand = Math.min(servoPosicionHand + articulacionIncremento,0.7);
+            servoPosicionHand = Math.min(servoPosicionHand + articulacionIncremento, 1);
             moverArtGarra(servoPosicionHand);
         }
         public void garraArticulacionAtras(double servoPosicionHand){
             servoPosicionHand = Math.max(servoPosicionHand - articulacionIncremento, 0.0);
             moverArtGarra(servoPosicionHand);
         }
+
+        public void mantenerArticulacionGarra(){
+            servoArticulacionGarra.setPosition(servoArticulacionGarra.getPosition());
+        }
         public void abrirGarra(){
             servoGarra.setPosition(1);
         }
         public void cerrarGarra(){
-            servoGarra.setPosition(0.72);
+            servoGarra.setPosition(0.5);
         }
         public void garraRotacionZero(){
             servoRotacion.setPosition(rotacionZero);

@@ -91,9 +91,9 @@ public class TeleOpMaster extends LinearOpMode {
 
         //_ BRAZO GARRA
             //TODO: REVISAR TOPES
-                if (gamepad2.dpad_up /*&& robot.servoBrazo1.getPosition() >= robot.topeFrontBrazoIzq && robot.servoBrazo2.getPosition() <= robot.topeFrontBrazoDer*/) {
+                if (gamepad2.dpad_up && robot.servoBrazo1.getPosition() <= robot.topeFrontBrazo1Izq && robot.servoBrazo2.getPosition() >= robot.topeFrontBrazo2Der) {
                     robot.brazoEnfrente(robot.servoBrazo1.getPosition(),robot.servoBrazo2.getPosition() );
-                } else if (gamepad2.dpad_down /*&& robot.servoBrazo1.getPosition() <= robot.topeAtrasBrazoIzq && robot.servoBrazo2.getPosition() >= robot.topeAtrasBrazoDer*/) {
+                } else if (gamepad2.dpad_down && robot.servoBrazo1.getPosition() >= robot.topeAtrasBrazo1Izq && robot.servoBrazo2.getPosition() <= robot.topeAtrasBrazo2Der) {
                     robot.brazoAtras(robot.servoBrazo1.getPosition(),robot.servoBrazo2.getPosition());
                 }
 
@@ -104,6 +104,8 @@ public class TeleOpMaster extends LinearOpMode {
                 }else if (-gamepad2.right_stick_y < -0.3) { //NOTE: GARRA MANO ATRAS
                     robot.garraArticulacionAtras(robot.servoArticulacionGarra.getPosition());
                     robot.mantenerBrazo();
+                } else {
+                    robot.mantenerArticulacionGarra();
                 }
 
         //_ GARRA
