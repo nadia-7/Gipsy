@@ -5,6 +5,8 @@ import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -28,20 +30,26 @@ public class Test extends LinearOpMode {
         Mecanismos mecanismos = new Mecanismos();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         mecanismos.init(hardwareMap);
-        Pose2d startPose = new Pose2d(30, 0, 0);
+        mecanismos.mantenerBarredora();
+        Pose2d startPose = new Pose2d(27.43, -64.57, Math.toRadians(90.00));
         drive.setPoseEstimate(startPose);
 
-        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
-                .
-            .build();
-
+        TrajectorySequence trajectory0 = drive.trajectorySequenceBuilder(startPose)
+                .splineToConstantHeading(new Vector2d(32.57, -51.43), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(40.95, -15.62), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(49.71, -15.24), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(46.48, -44.19), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(49.52, -48.95), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(51.05, -42.29), Math.toRadians(90))
+                .splineToConstantHeading(new Vector2d(51.62, -13.90), Math.toRadians(90))
+                .build();
         drive.setPoseEstimate(new Pose2d());
 
         waitForStart();
 
 
         if (isStopRequested()) return;
-        drive.turn(Math.toRadians(180));
+        drive.followTrajectorySequence(trajectory0);
         
         Pose2d poseEstimate = drive.getPoseEstimate();
         telemetry.addData("finalX", poseEstimate.getX());
