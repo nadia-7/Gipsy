@@ -39,7 +39,10 @@ public class TeleOpMaster extends LinearOpMode {
                 robot.subirElevador(0.5);
             }else if(!topeE && gamepad2.left_bumper){
                 robot.bajarElevador(0.5);
-            }else {
+            }else if(gamepad2.y) {
+                robot.bajarElevador(1);
+                sleep(10000);
+            } else {
                 robot.mantenerElevador();
             }
 
@@ -113,6 +116,12 @@ public class TeleOpMaster extends LinearOpMode {
                     robot.cerrarGarra();
                 } else if (gamepad2.b) {
                     robot.abrirGarra();
+                }
+        //_ TWIST
+                if(gamepad2.a){
+                    robot.garraRotacionFinal();
+                } else {
+                    robot.garraRotacionZero();
                 }
 
 

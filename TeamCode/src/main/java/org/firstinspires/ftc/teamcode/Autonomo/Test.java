@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.OpModes.Mecanismos;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 /*
  * This is a simple routine to test translational drive capabilities.
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
 //@Config
 @Autonomous(group = "a")
-public class EstacionarSumergible extends LinearOpMode {
+public class Test extends LinearOpMode {
     double distanciapapoi = 100;
 
     @Override
@@ -26,27 +27,15 @@ public class EstacionarSumergible extends LinearOpMode {
         Telemetry telemetry = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         Mecanismos mecanismos = new Mecanismos();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
         mecanismos.init(hardwareMap);
 
-        Trajectory trajectory = drive.trajectoryBuilder(new Pose2d())
-                        .forward(30)
-                        .build();
-
+        drive.setPoseEstimate(new Pose2d());
         waitForStart();
 
 
-        waitForStart();
-
-        //-1 meter
-        //1 sacar
         if (isStopRequested()) return;
-        drive.followTrajectory(trajectory);
-        mecanismos.ingesta.setPower(1);
-        sleep(500);
-        mecanismos.ingesta.setPower(0);
-
-
+        drive.turn(Math.toRadians(180));
+        
         Pose2d poseEstimate = drive.getPoseEstimate();
         telemetry.addData("finalX", poseEstimate.getX());
         telemetry.addData("finalY", poseEstimate.getY());

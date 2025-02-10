@@ -17,7 +17,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
  * These are not the only parameters; some are located in the localizer classes, drive base classes,
  * and op modes themselves.
  */
-
+@Config
 public class  DriveConstants {
 
     /*
@@ -48,7 +48,7 @@ public class  DriveConstants {
      */
     public static double WHEEL_RADIUS = 2.047245; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (motor) speed
-    public static double TRACK_WIDTH = 10.74;//10.75; // in
+    public static double TRACK_WIDTH = 10.29;//10.75; // in
 
     /*
      * These are the feedforward parameters used to model the drive motor behavior. If you are using
@@ -88,10 +88,10 @@ public class  DriveConstants {
      * You are free to raise this on your own if you would like. It is best determined through experimentation.
      
      */
-    public static double MAX_VEL = 70;
+    public static double MAX_VEL = 60;
     public static double MAX_ACCEL = 60;
-    public static double MAX_ANG_VEL = 4.4;
-    public static double MAX_ANG_ACCEL = Math.toRadians(360);
+    public static double MAX_ANG_VEL = 4.826725839110105;
+    public static double MAX_ANG_ACCEL = 5;
 
 
     public static RevHubOrientationOnRobot.LogoFacingDirection LOGO_FACING_DIR =

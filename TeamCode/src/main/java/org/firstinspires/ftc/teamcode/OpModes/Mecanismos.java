@@ -43,11 +43,11 @@ public class Mecanismos {
     //TODO: REVISAR VALORES
     double posicionArtGarraAtras = 0;
     double posicionArtGarraErecto = 0.2294;
-    double garraArticPosMaxEnfrente = 0.52;
+    double garraArticPosMaxEnfrente = 0.7194;
 
     //note: Valores rotacion GARRA
-    double rotacionZero= 0.97; //ARRIBA
-    double rotacionFinal = 0.29;
+    double rotacionZero= 0.0; //ARRIBA
+    double rotacionFinal = 1;
 
 
     public void init(HardwareMap hardwareMap){
@@ -68,7 +68,7 @@ public class Mecanismos {
         servoRotacion = hardwareMap.get(Servo.class, "rotacionGarra");
 
         moverBrazoMaxEnfrente();
-        moverArtGarra(garraArticPosMaxEnfrente); //erecto
+        moverArtGarra(0.66); //erecto
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
         runWithoutEncoder(ingesta);
@@ -87,7 +87,8 @@ public class Mecanismos {
 //TODO: CAMBIAR EL MOVER ART GARRA, TAMBIEN SE OCUPA PARA HIGH CHAMBER
         public void autoDejarSampleCanastaChamber(){
             cerrarGarra();
-            moverArtGarra(posicionArtGarraErecto);
+            moverArtGarra(
+                    posicionArtGarraErecto);
             moverBrazo(topeAtrasBrazo1Izq, topeAtrasBrazo2Der);
         }
 
@@ -119,6 +120,7 @@ public class Mecanismos {
 
 
         }
+
 
 //_ B A R R E D O R A
         public void extensionBarredora (double POWER){
@@ -187,7 +189,7 @@ public class Mecanismos {
             servoGarra.setPosition(1);
         }
         public void cerrarGarra(){
-            servoGarra.setPosition(0.5);
+            servoGarra.setPosition(0.2);
         }
         public void garraRotacionZero(){
             servoRotacion.setPosition(rotacionZero);
