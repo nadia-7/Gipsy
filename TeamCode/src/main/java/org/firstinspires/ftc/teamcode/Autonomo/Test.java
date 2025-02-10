@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomo;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
@@ -16,11 +17,10 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
  * This is a simple routine to test translational drive capabilities.
  */
 
-
-//@Config
+@Config
 @Autonomous(group = "a")
 public class Test extends LinearOpMode {
-    double distanciapapoi = 100;
+
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -28,8 +28,15 @@ public class Test extends LinearOpMode {
         Mecanismos mecanismos = new Mecanismos();
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         mecanismos.init(hardwareMap);
+        Pose2d startPose = new Pose2d(30, 0, 0);
+        drive.setPoseEstimate(startPose);
+
+        TrajectorySequence traj1 = drive.trajectorySequenceBuilder(startPose)
+                .
+            .build();
 
         drive.setPoseEstimate(new Pose2d());
+
         waitForStart();
 
 
