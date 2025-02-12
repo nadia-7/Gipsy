@@ -37,13 +37,13 @@ public class Mecanismos {
     double topeAtrasBrazo1Izq =0.5;//note: ATRAS 100% 0.3;
     double topeAtrasBrazo2Der = 0.48;//NOTE: ATRAS 100% 0.7;
     //_ enfrente
-    double topeFrontBrazo1Izq =1;
-    double topeFrontBrazo2Der = 0.01;
+    double topeFrontBrazo1Izq =0.92;
+    double topeFrontBrazo2Der = 0.09;
 
     //TODO: REVISAR VALORES
     double posicionArtGarraAtras = 0;
-    double posicionArtGarraErecto = 0.2294;
-    double garraArticPosMaxEnfrente = 0.7194;
+    double posicionArtGarraErecto = 0.2689;
+    double garraArticPosMaxEnfrente = 0.72;
 
     //note: Valores rotacion GARRA
     double rotacionZero= 0.0; //ARRIBA
@@ -186,10 +186,10 @@ public class Mecanismos {
             servoArticulacionGarra.setPosition(servoArticulacionGarra.getPosition());
         }
         public void abrirGarra(){
-            servoGarra.setPosition(1);
+            servoGarra.setPosition(0.39);
         }
         public void cerrarGarra(){
-            servoGarra.setPosition(0.2);
+            servoGarra.setPosition(0);
         }
         public void garraRotacionZero(){
             servoRotacion.setPosition(rotacionZero);

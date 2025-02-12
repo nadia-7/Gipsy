@@ -19,8 +19,6 @@ public class TeleOpMaster extends LinearOpMode {
     boolean topeE = true;
     boolean topeB = true;
 
-    int posBarr = 0;
-
     waitForStart();
 
         while (!isStopRequested()) {
@@ -36,9 +34,9 @@ public class TeleOpMaster extends LinearOpMode {
             }else if (topeE && gamepad2.left_bumper && robot.elevador1.getCurrentPosition() < robot.eletopeInferior && robot.elevador2.getCurrentPosition() < robot.eletopeInferior) {
                 robot.bajarElevador(0.7);
             }else if(!topeE && gamepad2.right_bumper){
-                robot.subirElevador(0.5);
+                robot.subirElevador(0.6);
             }else if(!topeE && gamepad2.left_bumper){
-                robot.bajarElevador(0.5);
+                robot.bajarElevador(0.6);
             }else if(gamepad2.y) {
                 robot.bajarElevador(1);
                 sleep(10000);

@@ -17,11 +17,14 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @TeleOp(group = "drive")
 public class LocalizationTest extends LinearOpMode {
+    public static double xEstimate = 8.69;
+    public static double yEstimate = 25.3;
+    public static double headingEstimate = 5.5175;
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        drive.setPoseEstimate(new Pose2d(xEstimate, yEstimate, headingEstimate));
 
         waitForStart();
 
