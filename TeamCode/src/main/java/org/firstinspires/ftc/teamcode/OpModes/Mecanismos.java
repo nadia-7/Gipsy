@@ -69,6 +69,7 @@ public class Mecanismos {
 
         moverBrazoMaxEnfrente();
         moverArtGarra(0.66); //erecto
+        subirArticulacionBarredora();
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
         runWithoutEncoder(ingesta);
