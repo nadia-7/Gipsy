@@ -5,8 +5,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 //AÑAAÑAÑAÑÑAÑAÑAÑÑAÑAÑÑAÑÑAÑAÑAÑAAAAA´
-//TODO: AGREGAR MÉTODOS CON TWIST (ROTACION)
-//TODO: EN DUDA SI AGREGAR UNA FUNCION PARA DISMINUIR VELOCIDAD DE LA BARREDORA
 
 //note: 1 es izquierda, 2 es derecha
 public class Mecanismos {
@@ -15,11 +13,13 @@ public class Mecanismos {
     public DcMotor elevador2;
     public int eletopeSuperior= -3323;
     public int eletopeInferior= 0;
+    int elevadorTomarSampleContenedor = -190;//change -238;
 
     //_ BARREDORA
     public DcMotor correderaBarredora;
     public DcMotor ingesta;
     public Servo servoAriculacionBarredora;
+    int topeBarredoraFront = -750;
 
     //_ GARRA
     public Servo servoBrazo1;
@@ -44,6 +44,7 @@ public class Mecanismos {
     double posicionArtGarraAtras = 0;
     double posicionArtGarraErecto = 0.2689;
     double garraArticPosMaxEnfrente = 0.72;
+    double articulacionGarraPosSpecimen = 0.27;
 
     //note: Valores rotacion GARRA
     double rotacionZero= 0.0; //ARRIBA
@@ -67,6 +68,7 @@ public class Mecanismos {
         servoGarra = hardwareMap.get(Servo.class, "garra");
         servoRotacion = hardwareMap.get(Servo.class, "rotacionGarra");
 
+        cerrarGarra();
         moverBrazoMaxEnfrente();
         moverArtGarra(0.66); //erecto
         subirArticulacionBarredora();
@@ -118,9 +120,18 @@ public class Mecanismos {
 
             elevador1.setPower(1);
             elevador2.setPower(1);
-
-
         }
+
+    public void elevadorRunToPosition(double power, int endPos){
+        elevador1.setTargetPosition(endPos);
+        elevador2.setTargetPosition(endPos);
+
+        elevador1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevador2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        elevador1.setPower(power);
+        elevador2.setPower(power);
+    }
 
 
 //_ B A R R E D O R A
@@ -144,6 +155,11 @@ public class Mecanismos {
             servoAriculacionBarredora.setPosition(0.45);
         }
 
+        public void barredoraRunToPosition(double power, int endPos){
+            correderaBarredora.setTargetPosition(endPos);
+            runToPosition(correderaBarredora);
+            correderaBarredora.setPower(power);
+        }
 //_ G A R R A
         public void moverArtGarra(double POS){
             servoArticulacionGarra.setPosition(POS);

@@ -90,6 +90,11 @@ public class TeleOpMaster extends LinearOpMode {
                     robot.autoDejarSampleCanastaChamber();
                 }
 
+                if(gamepad2.left_stick_button){ //Note: Tomar specimen
+                    robot.moverBrazoMaxEnfrente();
+                    robot.servoArticulacionGarra.setPosition(robot.articulacionGarraPosSpecimen);
+                }
+
         //_ BRAZO GARRA
             //TODO: REVISAR TOPES
                 if (gamepad2.dpad_up && robot.servoBrazo1.getPosition() <= robot.topeFrontBrazo1Izq && robot.servoBrazo2.getPosition() >= robot.topeFrontBrazo2Der) {
