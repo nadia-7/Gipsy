@@ -27,7 +27,7 @@ public class AutonomoCanastas extends LinearOpMode {
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.init(hardwareMap);
 
-        Pose2d basquetDropOff = new Pose2d(8.5, 27, 5.5175);
+        Pose2d basquetDropOff = new Pose2d(9/*change 8*/, 27, 5.5175);
 
         //_ Traj 1
         TrajectorySequence leave1Basquet = drive.trajectorySequenceBuilder(new Pose2d())
@@ -35,7 +35,7 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.subirElevador(0.9);
                 })
                 .splineToLinearHeading(basquetDropOff, 90)
-                .waitSeconds(1)
+                .waitSeconds(0.95)
                 .addTemporalMarker(1.6, () -> {
                     robot.runUsingEncoder(robot.elevador1, robot.elevador2);
                     robot.mantenerElevador();
@@ -46,7 +46,7 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.autoDejarSampleCanastaChamber();
                     robot.servoArticulacionGarra.setPosition(0.16);
                 })
-                .addTemporalMarker(1.9/*change2*/, () -> {
+                .addTemporalMarker(1.85/*change 1.9*/, () -> {
                     robot.abrirGarra();
                 })
                 .build();
@@ -55,7 +55,6 @@ public class AutonomoCanastas extends LinearOpMode {
         TrajectorySequence pickU2Basquet = drive.trajectorySequenceBuilder(leave1Basquet.end())
                 .addTemporalMarker(0, () -> {
                     robot.autoTomarSampleContenedor();
-                    robot.abrirGarra();
                     robot.bajarElevador(0.9);
                 })
                 .addTemporalMarker(1.1, () -> {
@@ -64,25 +63,25 @@ public class AutonomoCanastas extends LinearOpMode {
 
                 })
 
-
-                 .splineToLinearHeading(new Pose2d(18.5, 19.3, 0), -100)
+                //note: primer sample cancha
+                .splineToLinearHeading(new Pose2d(16.2, 18.5, 0), 0)
                 .UNSTABLE_addTemporalMarkerOffset(0, () ->{
                     robot.bajarArticulacionBarredora();
-                    robot.ingesta.setPower(-0.95); //change 1
+                    robot.ingesta.setPower(-1);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1.2, ()->{
-                    robot.servoAriculacionBarredora.setPosition(0.05);//robot.subirArticulacionBarredora();
-                    robot.barredoraRunToPosition(-0.6, 0);
-
-                     })
-                .UNSTABLE_addTemporalMarkerOffset(0.9, () -> {
+                    robot.servoAriculacionBarredora.setPosition(0.05);
+                    robot.barredoraRunToPosition(-0.8, 10); //change 0
+                    robot.abrirGarra();
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.95, () -> {
                     robot.ingesta.setPower(0);
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1.7, () ->{
                     robot.ingesta.setPower(-1);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.15, () ->{ //change 2
+                .UNSTABLE_addTemporalMarkerOffset(2.15, () ->{
                     robot.ingesta.setPower(0);
                 })
 
@@ -113,16 +112,36 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.servoArticulacionGarra.setPosition(0.16);
 
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.6, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.8, () ->{
                     robot.abrirGarra();
                 })
-                .waitSeconds(2)
+
+                .waitSeconds(1.95)
                 .build();
 
-        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(traj3.end())
+        TrajectorySequence traj4 = drive.trajectorySequenceBuilder(pickU2Basquet.end())
+                .addTemporalMarker(0.1, () ->{
+                    robot.autoTomarSampleContenedor();
+                })
+                .addTemporalMarker(0.7, () ->{
+                    robot.elevadorRunToPosition(1, -500);
+                })
+                .splineToLinearHeading(new Pose2d(16.2, 27.2, 0), 0)
+                .UNSTABLE_addTemporalMarkerOffset(0, () ->{
+                    robot.bajarArticulacionBarredora();
+                    robot.ingesta.setPower(-1);
+                })
+                .UNSTABLE_addTemporalMarkerOffset(0.92, ()->{
+                    robot.ingesta.setPower(0);
 
+                })
+                .UNSTABLE_addTemporalMarkerOffset(1.2, () ->{
+                    robot.servoAriculacionBarredora.setPosition(0.05);
+                    robot.barredoraRunToPosition(-0.6, 10);
+                    robot.abrirGarra();
+                })
+                .waitSeconds(1.5)
                 .build();
-
 
 
 
@@ -130,6 +149,7 @@ public class AutonomoCanastas extends LinearOpMode {
         drive.followTrajectorySequence(leave1Basquet);
         drive.followTrajectorySequence(pickU2Basquet);
         drive.followTrajectorySequence(traj3);
+        drive.followTrajectorySequence(traj4);
     }
 
 }

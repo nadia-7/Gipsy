@@ -13,7 +13,7 @@ public class Mecanismos {
     public DcMotor elevador2;
     public int eletopeSuperior= -3323;
     public int eletopeInferior= 0;
-    int elevadorTomarSampleContenedor = -190;//change -238;
+    int elevadorTomarSampleContenedor = -190;
 
     //_ BARREDORA
     public DcMotor correderaBarredora;
