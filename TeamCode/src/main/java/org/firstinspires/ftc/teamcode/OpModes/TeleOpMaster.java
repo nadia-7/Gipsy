@@ -91,7 +91,7 @@ public class TeleOpMaster extends LinearOpMode {
                 }
 
                 if(gamepad2.left_stick_button){ //Note: Tomar specimen
-                    robot.moverBrazoMaxEnfrente();
+                    robot.moverBrazo(0.94, 0.06);
                     robot.servoArticulacionGarra.setPosition(robot.articulacionGarraPosSpecimen);
                 }
 
@@ -120,12 +120,7 @@ public class TeleOpMaster extends LinearOpMode {
                 } else if (gamepad2.b) {
                     robot.abrirGarra();
                 }
-        //_ TWIST
-                if(gamepad2.a){
-                    robot.garraRotacionFinal();
-                } else {
-                    robot.garraRotacionZero();
-                }
+
 
 
 //_ == C H A S I S ==
@@ -161,7 +156,6 @@ public class TeleOpMaster extends LinearOpMode {
                 telemetry.addLine("Garra abierta");
             } else telemetry.addLine("Garra cerrada");
             telemetry.addData("Garra", robot.servoGarra.getPosition());
-            telemetry.addData("Giro Garra", robot.servoRotacion.getPosition());
             telemetry.addLine("");
 
             telemetry.update();

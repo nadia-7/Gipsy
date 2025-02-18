@@ -44,7 +44,6 @@ public class AutonomoCanastas extends LinearOpMode {
                 })
                 .addTemporalMarker(1.3,() ->{
                     robot.autoDejarSampleCanastaChamber();
-                    robot.servoArticulacionGarra.setPosition(0.16);
                 })
                 .addTemporalMarker(1.85, () -> {
                     robot.abrirGarra();
@@ -111,7 +110,6 @@ public class AutonomoCanastas extends LinearOpMode {
                 .splineToLinearHeading(basquetDropOff, 90)
                 .UNSTABLE_addTemporalMarkerOffset(1, () ->{
                     robot.autoDejarSampleCanastaChamber();
-                    robot.servoArticulacionGarra.setPosition(0.16);
 
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1.8, () ->{
@@ -174,7 +172,6 @@ public class AutonomoCanastas extends LinearOpMode {
                 .splineToLinearHeading(basquetDropOff, 90)
                 .UNSTABLE_addTemporalMarkerOffset(1, () ->{
                     robot.autoDejarSampleCanastaChamber();
-                    robot.servoArticulacionGarra.setPosition(0.16);
 
                 })
                 .UNSTABLE_addTemporalMarkerOffset(1.8, () ->{
@@ -184,6 +181,18 @@ public class AutonomoCanastas extends LinearOpMode {
                 .waitSeconds(1.95)
                 .build();
 
+        TrajectorySequence traj6 = drive.trajectorySequenceBuilder(pickU2Basquet.end())
+                .addTemporalMarker(0.1, () ->{
+                    robot.autoTomarSampleContenedor();
+                })
+                .addTemporalMarker(0.7, () ->{
+                    robot.elevadorRunToPosition(1, -500);
+                })
+                .splineToLinearHeading(new Pose2d(23.6, 25.2, Math.toRadians(90)), Math.toRadians(90))
+                .waitSeconds(2)
+                .build();
+
+
 
 
         waitForStart();
@@ -192,6 +201,7 @@ public class AutonomoCanastas extends LinearOpMode {
         drive.followTrajectorySequence(traj3);
         drive.followTrajectorySequence(traj4);
         drive.followTrajectorySequence(traj5);
+        drive.followTrajectorySequence(traj6);
 
     }
 

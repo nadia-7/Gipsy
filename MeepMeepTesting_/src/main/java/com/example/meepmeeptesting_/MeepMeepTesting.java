@@ -17,9 +17,11 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(new Pose2d())
                         .splineToLinearHeading(basquetDropOff, 90)
-                        .splineToLinearHeading(new Pose2d(18.5, 19.3, 0), 0)
+                        .splineToLinearHeading(new Pose2d(16.2, 18.5, 0), 0)
                         .splineToLinearHeading(basquetDropOff, 90)
-                        .splineToLinearHeading(new Pose2d(18.5, 28.6, Math.toRadians(10)),0 )
+                        .splineToLinearHeading(new Pose2d(16.2, 27.2, 0), 0)
+                        .splineToLinearHeading(basquetDropOff, 90)
+                        .splineToLinearHeading(new Pose2d(23.6, 25.2, Math.toRadians(90)), Math.toRadians(90))
 
 
 

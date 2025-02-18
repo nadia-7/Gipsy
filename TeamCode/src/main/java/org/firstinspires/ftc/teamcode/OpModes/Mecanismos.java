@@ -13,7 +13,7 @@ public class Mecanismos {
     public DcMotor elevador2;
     public int eletopeSuperior= -3323;
     public int eletopeInferior= 0;
-    int elevadorTomarSampleContenedor = -190;
+    int elevadorTomarSampleContenedor = -381; //change -190;
 
     //_ BARREDORA
     public DcMotor correderaBarredora;
@@ -26,7 +26,6 @@ public class Mecanismos {
     public Servo servoBrazo2;
     public Servo servoArticulacionGarra;
     public Servo servoGarra;
-    public Servo servoRotacion;
 
     //_ CONSTANTES
     double articulacionIncremento =0.01;
@@ -35,20 +34,16 @@ public class Mecanismos {
     //note: Topes BRAZO
     //_ atras
     double topeAtrasBrazo1Izq =0.5;//note: ATRAS 100% 0.3;
-    double topeAtrasBrazo2Der = 0.48;//NOTE: ATRAS 100% 0.7;
+    double topeAtrasBrazo2Der =0.5; //NOTE: ATRAS 100% 0.7;
     //_ enfrente
-    double topeFrontBrazo1Izq =0.92;
-    double topeFrontBrazo2Der = 0.09;
+    double topeFrontBrazo1Izq =1;
+    double topeFrontBrazo2Der = 0;
 
-    //TODO: REVISAR VALORES
-    double posicionArtGarraAtras = 0;
-    double posicionArtGarraErecto = 0.2689;
-    double garraArticPosMaxEnfrente = 0.72;
-    double articulacionGarraPosSpecimen = 0.27;
+    double posicionArtGarraErecto = 0.5;
 
-    //note: Valores rotacion GARRA
-    double rotacionZero= 0.0; //ARRIBA
-    double rotacionFinal = 1;
+    double garraArticPosMaxEnfrente = 0.79;
+    double articulacionGarraPosSpecimen = 0.6; //NOTE: tomar spacimen
+
 
 
     public void init(HardwareMap hardwareMap){
@@ -66,11 +61,10 @@ public class Mecanismos {
         servoBrazo2 = hardwareMap.get(Servo.class, "brazo2");
         servoArticulacionGarra = hardwareMap.get(Servo.class, "articulacionGarra");
         servoGarra = hardwareMap.get(Servo.class, "garra");
-        servoRotacion = hardwareMap.get(Servo.class, "rotacionGarra");
 
         cerrarGarra();
         moverBrazoMaxEnfrente();
-        moverArtGarra(0.66); //erecto
+        moverArtGarra(garraArticPosMaxEnfrente);
         subirArticulacionBarredora();
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
@@ -87,11 +81,9 @@ public class Mecanismos {
             moverBrazoMaxEnfrente();
             cerrarGarra();
         }
-//TODO: CAMBIAR EL MOVER ART GARRA, TAMBIEN SE OCUPA PARA HIGH CHAMBER
         public void autoDejarSampleCanastaChamber(){
             cerrarGarra();
-            moverArtGarra(
-                    posicionArtGarraErecto);
+            moverArtGarra(posicionArtGarraErecto);
             moverBrazo(topeAtrasBrazo1Izq, topeAtrasBrazo2Der);
         }
 
@@ -207,12 +199,6 @@ public class Mecanismos {
         }
         public void cerrarGarra(){
             servoGarra.setPosition(0);
-        }
-        public void garraRotacionZero(){
-            servoRotacion.setPosition(rotacionZero);
-        }
-        public void garraRotacionFinal(){
-            servoRotacion.setPosition(rotacionFinal);
         }
 
 //_ M O T O R E S
