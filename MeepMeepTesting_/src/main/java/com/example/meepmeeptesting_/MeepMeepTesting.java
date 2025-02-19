@@ -19,9 +19,11 @@ public class MeepMeepTesting {
                         .splineToLinearHeading(basquetDropOff, 90)
                         .splineToLinearHeading(new Pose2d(16.2, 18.5, 0), 0)
                         .splineToLinearHeading(basquetDropOff, 90)
-                        .splineToLinearHeading(new Pose2d(16.2, 27.2, 0), 0)
+                        .splineToLinearHeading(new Pose2d(16.2, 27.2, 0), 90)
                         .splineToLinearHeading(basquetDropOff, 90)
-                        .splineToLinearHeading(new Pose2d(23.6, 25.2, Math.toRadians(90)), Math.toRadians(90))
+                        .splineToLinearHeading(new Pose2d(39/*change 35*/, 15, Math.toRadians(90/*change 85*/)), Math.toRadians(0))
+                        .splineToSplineHeading(basquetDropOff, 90)
+
 
 
 
