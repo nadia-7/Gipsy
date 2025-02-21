@@ -13,13 +13,13 @@ public class Mecanismos {
     public DcMotor elevador2;
     public int eletopeSuperior= -3323;
     public int eletopeInferior= 0;
-    int elevadorTomarSampleContenedor = -300; //change -190;
+    public int elevadorTomarSampleContenedor = -210; //change -300;
 
     //_ BARREDORA
     public DcMotor correderaBarredora;
     public DcMotor ingesta;
     public Servo servoAriculacionBarredora;
-    int topeBarredoraFront = -750;
+    public int topeBarredoraFront = -750;
 
     //_ GARRA
     public Servo servoBrazo1;
@@ -38,11 +38,13 @@ public class Mecanismos {
     //_ enfrente
     double topeFrontBrazo1Izq =1;
     double topeFrontBrazo2Der = 0;
+    double AUTOtopeFrontBrazo1Izq =1;
+    double AUTOtopeFrontBrazo2Der = 0;
 
-    double posicionArtGarraErecto = 0.5;
+    double posicionArtGarraErecto = 0.379;
 
-    double garraArticPosMaxEnfrente = 0.79;
-    double articulacionGarraPosSpecimen = 0.6; //NOTE: tomar spacimen
+    double garraArticPosMaxEnfrente = 0.78;
+    double articulacionGarraPosSpecimen = 0.47; //NOTE: tomar spacimen
 
 
 
@@ -63,8 +65,8 @@ public class Mecanismos {
         servoGarra = hardwareMap.get(Servo.class, "garra");
 
         cerrarGarra();
-        moverBrazoMaxEnfrente();
-        moverArtGarra(garraArticPosMaxEnfrente);
+       // moverBrazoMaxEnfrente();
+        //moverArtGarra(garraArticPosMaxEnfrente);
         subirArticulacionBarredora();
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
@@ -81,6 +83,13 @@ public class Mecanismos {
             moverBrazoMaxEnfrente();
             cerrarGarra();
         }
+
+    public void AUTOTomarSampleContenedor(){
+        cerrarGarra();
+        moverArtGarra(garraArticPosMaxEnfrente);
+        moverBrazo(AUTOtopeFrontBrazo1Izq, AUTOtopeFrontBrazo2Der);
+        cerrarGarra();
+    }
         public void autoDejarSampleCanastaChamber(){
             cerrarGarra();
             moverArtGarra(posicionArtGarraErecto);
@@ -91,21 +100,21 @@ public class Mecanismos {
 //_ E L E V A D O R
         //NOTE: ¿se podria cambiar por brake?  nooooooooooooooooo, no se puede
         public void subirElevador(double POWER){
-            elevador1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            elevador2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            elevador1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elevador2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevador1.setPower(-POWER);
             elevador2.setPower(-POWER);
         }
         public void bajarElevador(double POWER){
 
-            elevador1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            elevador2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            elevador1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            elevador2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             elevador1.setPower(POWER);
             elevador2.setPower(POWER);
         }
         public void mantenerElevador(){
             elevador1.setTargetPosition(elevador1.getCurrentPosition());
-            elevador2.setTargetPosition(elevador1.getCurrentPosition());
+            elevador2.setTargetPosition(elevador2.getCurrentPosition());
 
             elevador1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             elevador2.setMode(DcMotor.RunMode.RUN_TO_POSITION);

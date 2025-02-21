@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.OpModes.Test;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
@@ -7,28 +7,19 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 
-import org.firstinspires.ftc.teamcode.OpModes.Test.SensorColores;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.OpModes.Mecanismos;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
-//TODO MOVER ARTICULACION GARRA
-//seconds salir barredora:  1.1, power: 0.65
-//seconds high basket elevator: 1.5, power: 0.9
-//seconds retraer barredora: 0.43, power -0.75
-//seconds take sample elevator: 1.1 + .35 power: 0.9
-//note: posicion articulacion garra tomar sample: 0.68
-//note: posicion articulacion garra dejar sample: 0.16
-//note: elevador tope tomar sample -238
-
 
 @Autonomous
-public class AutonomoCanastas extends LinearOpMode {
+public class AutonomCanastasTestTest extends LinearOpMode {
     public static double consX = 0;
     public static double consY = 0;
-
-//    DistanceSensor sensorDistance;
+    DistanceSensor sensorDistance;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -36,9 +27,9 @@ public class AutonomoCanastas extends LinearOpMode {
         Mecanismos robot = new Mecanismos();
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.init(hardwareMap);
-//        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor_distance");
-        robot.cerrarGarra();
+        sensorDistance = hardwareMap.get(DistanceSensor.class, "sensor");
 
+        robot.cerrarGarra();
         Pose2d basquetDropOff = new Pose2d(12.2 + consX, 27 + consY, 5.5175);
 
         //_ Traj 1
@@ -82,32 +73,37 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.bajarArticulacionBarredora();
                     robot.ingesta.setPower(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.82 , () -> {
+                .build();
+
+        TrajectorySequence pickU2Basquet_1 = drive.trajectorySequenceBuilder(leave1Basquet.end())
+
+                //_---
+                .UNSTABLE_addTemporalMarkerOffset(0 , () -> {
                     robot.ingesta.setPower(0);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(1.1, ()->{
+                .UNSTABLE_addTemporalMarkerOffset(0.28, ()->{
                     robot.servoAriculacionBarredora.setPosition(0.05);
                     robot.barredoraRunToPosition(-0.6, 0);
                     robot.abrirGarra();
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(1.7, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(0.88, () ->{
                     robot.ingesta.setPower(-1);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2 /*note 2.2*/, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.18 /*note 2.2*/, () ->{
                     robot.ingesta.setPower(0);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.18, () ->{
                     robot.elevadorRunToPosition(0.9, robot.elevadorTomarSampleContenedor);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.5, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(1.68, () -> {
                     robot.cerrarGarra();
                 })
-                .waitSeconds(2.9)
+                .waitSeconds(2.08)
 
                 .build();
 
@@ -147,32 +143,36 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.bajarArticulacionBarredora();
                     robot.ingesta.setPower(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1, ()->{
+                .build();
+
+                //_ ----------------------------------
+        TrajectorySequence traj4_1 = drive.trajectorySequenceBuilder(pickU2Basquet.end())
+                .UNSTABLE_addTemporalMarkerOffset(0, ()->{
                     robot.ingesta.setPower(0);
 
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.4, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(.4, () ->{
                     robot.servoAriculacionBarredora.setPosition(0.05);
                     robot.barredoraRunToPosition(-0.6, 10);
                     robot.abrirGarra();
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(1.9, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(.9, () ->{
                     robot.ingesta.setPower(-1);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.5, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.5, () ->{
                     robot.ingesta.setPower(0);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.2, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.2, () ->{
                     robot.elevadorRunToPosition(0.9, robot.elevadorTomarSampleContenedor);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.7, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(1.7, () -> {
                     robot.cerrarGarra();
                 })
-                .waitSeconds(3.2)
+                .waitSeconds(2.2)
                 .build();
 
         TrajectorySequence traj5 = drive.trajectorySequenceBuilder(pickU2Basquet.end())
@@ -213,31 +213,35 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.bajarArticulacionBarredora();
                     robot.ingesta.setPower(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(0.8, ()->{
+                .build();
+
+        TrajectorySequence traj6_1 = drive.trajectorySequenceBuilder(pickU2Basquet.end())
+                //_ --
+                .UNSTABLE_addTemporalMarkerOffset(0.0, ()->{
                     robot.ingesta.setPower(0);
 
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.4, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(0.9, () ->{
                     robot.servoAriculacionBarredora.setPosition(0.05);
                     robot.barredoraRunToPosition(-0.6, 15);
                     robot.abrirGarra();
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.9, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.1, () ->{
                     robot.ingesta.setPower(-1);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.2, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.4, () ->{
                     robot.ingesta.setPower(0);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.2, () ->{
+                .UNSTABLE_addTemporalMarkerOffset(1.4, () ->{
                     robot.elevadorRunToPosition(0.9, robot.elevadorTomarSampleContenedor);
                 })
 
-                .UNSTABLE_addTemporalMarkerOffset(2.7, () -> {
+                .UNSTABLE_addTemporalMarkerOffset(1.9, () -> {
                     robot.cerrarGarra();
                 })
-                .waitSeconds(3.1)
+                .waitSeconds(2.3)
                 .build();
 
         TrajectorySequence traj7 = drive.trajectorySequenceBuilder(pickU2Basquet.end())
@@ -275,12 +279,10 @@ public class AutonomoCanastas extends LinearOpMode {
         waitForStart();
         drive.followTrajectorySequence(leave1Basquet);
         drive.followTrajectorySequence(pickU2Basquet);
-        drive.followTrajectorySequence(traj3);
-        drive.followTrajectorySequence(traj4);
-        drive.followTrajectorySequence(traj5);
-        drive.followTrajectorySequence(traj6);
-        drive.followTrajectorySequence(traj7);
-        drive.followTrajectorySequence(traj8);
+        while (sensorDistance.getDistance(DistanceUnit.CM) > 6.5){
+            robot.ingesta.setPower(-1);
+        }
+        drive.followTrajectorySequence(pickU2Basquet_1);
 
     }
 
