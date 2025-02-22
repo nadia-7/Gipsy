@@ -13,7 +13,9 @@ public class Mecanismos {
     public DcMotor elevador2;
     public int eletopeSuperior= -3323;
     public int eletopeInferior= 0;
-    public int elevadorTomarSampleContenedor = -100; //change -300;
+    public int elevadorTomarSampleContenedor = 0; //change -100;
+    public int elevadorTomarSampleContenedor2 = 1200; //change -100;
+
 
     //_ BARREDORA
     public DcMotor correderaBarredora;
@@ -41,11 +43,11 @@ public class Mecanismos {
     double AUTOtopeFrontBrazo1Izq =1;
     double AUTOtopeFrontBrazo2Der = 0;
 
-    double posicionArtGarraErecto = 0.37;
+    double posicionArtGarraErecto = 0.5;
 
-    double garraArticPosMaxEnfrente = 0.92;
-    double garraArticPosMaxEnfrenteTRABADO = 0.87;
-    double articulacionGarraPosSpecimen = 0.47; //NOTE: tomar spacimen
+    double garraArticPosMaxEnfrente = 0.02;
+    double garraArticPosMaxEnfrenteTRABADO = 0.02;
+    double articulacionGarraPosSpecimen = 0.47; //NOTE: tomar spacimen //todo: change this
 
 
 
@@ -151,10 +153,10 @@ public class Mecanismos {
             correderaBarredora.setPower(1);
         }
         public void subirArticulacionBarredora(){
-            servoAriculacionBarredora.setPosition(0.2);
+            servoAriculacionBarredora.setPosition(0.15);
         }
         public void bajarArticulacionBarredora(){
-            servoAriculacionBarredora.setPosition(0.45);
+            servoAriculacionBarredora.setPosition(0.55/*45*/);
         }
 
         public void barredoraRunToPosition(double power, int endPos){
