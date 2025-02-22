@@ -13,7 +13,7 @@ public class Mecanismos {
     public DcMotor elevador2;
     public int eletopeSuperior= -3323;
     public int eletopeInferior= 0;
-    public int elevadorTomarSampleContenedor = -210; //change -300;
+    public int elevadorTomarSampleContenedor = -100; //change -300;
 
     //_ BARREDORA
     public DcMotor correderaBarredora;
@@ -41,9 +41,10 @@ public class Mecanismos {
     double AUTOtopeFrontBrazo1Izq =1;
     double AUTOtopeFrontBrazo2Der = 0;
 
-    double posicionArtGarraErecto = 0.379;
+    double posicionArtGarraErecto = 0.37;
 
-    double garraArticPosMaxEnfrente = 0.78;
+    double garraArticPosMaxEnfrente = 0.92;
+    double garraArticPosMaxEnfrenteTRABADO = 0.87;
     double articulacionGarraPosSpecimen = 0.47; //NOTE: tomar spacimen
 
 
@@ -65,8 +66,8 @@ public class Mecanismos {
         servoGarra = hardwareMap.get(Servo.class, "garra");
 
         cerrarGarra();
-       // moverBrazoMaxEnfrente();
-        //moverArtGarra(garraArticPosMaxEnfrente);
+       moverBrazoMaxEnfrente();
+       moverArtGarra(garraArticPosMaxEnfrente);
         subirArticulacionBarredora();
         stopResetEconder(elevador1, elevador2, correderaBarredora);
         runUsingEncoder(elevador1, elevador2, correderaBarredora);
@@ -84,9 +85,9 @@ public class Mecanismos {
             cerrarGarra();
         }
 
-    public void AUTOTomarSampleContenedor(){
+    public void autoTomarSampleContenedorTRABADO(){
         cerrarGarra();
-        moverArtGarra(garraArticPosMaxEnfrente);
+        moverArtGarra(garraArticPosMaxEnfrenteTRABADO);
         moverBrazo(AUTOtopeFrontBrazo1Izq, AUTOtopeFrontBrazo2Der);
         cerrarGarra();
     }
@@ -150,7 +151,7 @@ public class Mecanismos {
             correderaBarredora.setPower(1);
         }
         public void subirArticulacionBarredora(){
-            servoAriculacionBarredora.setPosition(0.11);
+            servoAriculacionBarredora.setPosition(0.2);
         }
         public void bajarArticulacionBarredora(){
             servoAriculacionBarredora.setPosition(0.45);

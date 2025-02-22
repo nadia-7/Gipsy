@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.OpModes.Test;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.OpModes.Mecanismos;
 
 //TODO: ASIGNAR TOPES AL ELEVADOR
 @TeleOp
+@Disabled
 public class ElevadoresTest extends LinearOpMode {
     @Override
     public void runOpMode() {

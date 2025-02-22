@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.OpModes.Test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 //    private static final double TICKS_PER_REVOLUTION = 8192;   //537.7
 //    int elevatorTolerance = 50;
+@Disabled
 @TeleOp( name = "Elevapapu", group = "ugu")
 public class ElevadorTest1 extends LinearOpMode {
     public DcMotor elevador1 = null;

@@ -39,7 +39,7 @@ public class TeleOpMaster extends LinearOpMode {
                 robot.bajarElevador(0.6);
             }else if(gamepad2.y) {
                 robot.bajarElevador(1);
-                sleep(10000);
+                sleep(5000);
             } else {
                 robot.mantenerElevador();
             }
