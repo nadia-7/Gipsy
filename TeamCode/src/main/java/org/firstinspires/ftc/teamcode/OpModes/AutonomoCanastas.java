@@ -71,9 +71,10 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.subirArticulacionBarredora();
                     robot.elevadorRunToPosition(1, -500);
                 })
+                //DEVOLT
 
                 //note: primer sample SPIKE
-                .splineToLinearHeading(new Pose2d(15.5 + consX, 17.5 + consY, Math.toRadians(4)), 0)
+                .splineToLinearHeading(new Pose2d(15.6 + consX, 17.5 + consY, Math.toRadians(4)), 0)
                 .UNSTABLE_addTemporalMarkerOffset(0.1, () ->{
                     robot.zeroPower(robot.elevador1, robot.elevador2, robot.correderaBarredora);
                     robot.bajarArticulacionBarredora();
@@ -149,13 +150,13 @@ public class AutonomoCanastas extends LinearOpMode {
 
                 })
                 //note tomar segundo sample
-                .splineToLinearHeading(new Pose2d(15.2+ consX, 26.8 /*27.5*/ + consY, Math.toRadians(2/*change 5*/)), 0)
+                .splineToLinearHeading(new Pose2d(15.5+ consX, 27.3 /*26.8*/ + consY, Math.toRadians(2/*change 5*/)), 0)
                 .UNSTABLE_addTemporalMarkerOffset(0.2, () ->{
                     robot.bajarArticulacionBarredora();
                     robot.zeroPower(robot.elevador1, robot.elevador2, robot.correderaBarredora);
                     robot.ingesta.setPower(-1);
                 })
-                .UNSTABLE_addTemporalMarkerOffset(1.7, ()->{
+                .UNSTABLE_addTemporalMarkerOffset(1.3/* change 1.7*/, ()->{
                     robot.ingesta.setPower(0);
                     robot.mantenerElevador();
 
@@ -290,7 +291,7 @@ public class AutonomoCanastas extends LinearOpMode {
                     robot.barredoraRunToPosition(0.67, 10);
                     robot.elevadorRunToPosition(0.8, 0);
                 })
-                .splineTo(new Vector2d(59 + consX, -9 + consY), Math.toRadians(-90))
+                .splineTo(new Vector2d(59 + consX, -11/*change 9*/ + consY), Math.toRadians(-90))
                 .build();
 
 

@@ -156,7 +156,7 @@ public class Mecanismos {
             servoAriculacionBarredora.setPosition(0.15);
         }
         public void bajarArticulacionBarredora(){
-            servoAriculacionBarredora.setPosition(0.55/*45*/);
+            servoAriculacionBarredora.setPosition(0.45/*45*/);
         }
 
         public void barredoraRunToPosition(double power, int endPos){
